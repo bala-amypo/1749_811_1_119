@@ -1,56 +1,29 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Stock {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String ticker;
     private String companyName;
     private String sector;
-    private Boolean active;
 
-    public Stock(Long id,String ticker,String companyName,String sector,Boolean active){
-        this.id=id;
-        this.ticker=ticker;
-        this.companyName=companyName;
-        this.sector=sector;
-        this.active=active;
-    }
+    public Stock() {}
 
-    public Stock(){
-        
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setTicker(String ticker){
-        this.ticker=ticker;
-    }
-    public String getTicker(){
-        return this.ticker;
-    }
-    public void setCompanyname(String companyName){
-        this.companyName=companyName;
-    }
-    public String getCompanyName(){
-        return this.companyName;
-    }
-    public void setSector(String sector){
-        this.sector=sector;
-    }
-    public String getSector(){
-        return this.sector;
-    }
-    public void setActive(Boolean active){
-        this.active=active;
-    }
-    public Boolean getActive(){
-        return this.active;
-    }
+    public String getTicker() { return ticker; }
+    public void setTicker(String ticker) { this.ticker = ticker; }
+
+    public String getCompanyName() { return companyName; }
+    public void setCompanyName(String companyName) { this.companyName = companyName; }
+
+    public String getSector() { return sector; }
+    public void setSector(String sector) { this.sector = sector; }
 }

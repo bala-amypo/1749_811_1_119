@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.Stock;
 import java.util.List;
 
-public interface StockService{
+public interface StockService {
     Stock saveStock(Stock stock);
     List<Stock> getAllStocks();
 }
