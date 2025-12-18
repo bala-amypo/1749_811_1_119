@@ -3,18 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.model.RiskAnalysisResult;
 import com.example.demo.repository.RiskAnalysisResultRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/risk-analysis")
 public class RiskAnalysisController {
-
-    private final RiskAnalysisResultRepository repository;
-
-    public RiskAnalysisController(RiskAnalysisResultRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private RiskAnalysisResultRepository repository;
 
     @PostMapping
     public RiskAnalysisResult create(

@@ -3,18 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.model.PortfolioHolding;
 import com.example.demo.repository.PortfolioHoldingRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/holdings")
 public class PortfolioHoldingController {
-
-    private final PortfolioHoldingRepository repository;
-
-    public PortfolioHoldingController(PortfolioHoldingRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private PortfolioHoldingRepository repository;
 
     @PostMapping
     public PortfolioHolding create(@RequestBody PortfolioHolding holding) {
