@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class AuthController {
 
-    private final AuthRepository repository;
+    private final UserRepository repository;
 
     public AuthController(UserRepository repository) {
         this.repository = repository;
