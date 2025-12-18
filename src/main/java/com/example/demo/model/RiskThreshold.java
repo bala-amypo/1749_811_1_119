@@ -19,11 +19,11 @@ public class RiskThreshold {
 
     public double getMaxStockPercent() { return maxSingleStockPercentage; }
     public void setMaxStockPercent(double maxSingleStockPercentage) {
-        this.maxSingleStockPercent = maxSingleStockPercent;
+        this.maxSingleStockPercentage = maxSingleStockPercentage;
     }
 
-    public double getMaxSectorPercent() { return maxSectorPercent; }
-    public void setMaxSectorPercent(double maxSectorPercent) {
-        this.maxSectorPercent = maxSectorPercent;
+    public double getMaxSectorPercent() { return maxSectorPercentage; }
+    public void setMaxSectorPercent(double maxSectorPercentage) {
+        this.maxSectorPercentage = maxSectorPercentage;
     }
 }
