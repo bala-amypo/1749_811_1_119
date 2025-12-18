@@ -6,14 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Stock {
+public class UserPortfolio {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String ticker;
-    private String companyName;
+    private Long userId;
+    private Timestamp;
     private String sector;
     private Boolean active;
 
