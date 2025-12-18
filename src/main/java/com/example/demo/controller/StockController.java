@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Stock;
-import com.example.demo.service.StockService;
+import com.example.demo.repository.StockRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +10,24 @@ import java.util.List;
 @RequestMapping("/stocks")
 public class StockController {
 
-    private final StockService service;
+    private final StockRepository repository;
 
-    public StockController(StockService service) {
-        this.service = service;
+    public StockController(StockRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping
-    public Stock addStock(@RequestBody Stock stock) {
-        return service.saveStock(stock);
+    public Stock create(@RequestBody Stock stock) {
+        return repository.save(stock);
     }
 
     @GetMapping
-    public List<Stock> getStocks() {
-        return service.getAllStocks();
+    public List<Stock> getAll() {
+        return repository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Stock getById(@PathVariable Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Entity
 public class PortfolioHolding {
@@ -9,27 +11,65 @@ public class PortfolioHolding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long portfolioId;
-    private Long stockId;
-    private int quantity;
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id")
+    private UserPortfolio portfolio;
+
+    @ManyToOne
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
+
+    private Double quantity;
+
+    private BigDecimal marketValue;
+
+    private Timestamp lastUpdated;
 
     public PortfolioHolding() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Long getPortfolioId() { return portfolioId; }
-    public void setPortfolioId(Long portfolioId) {
-        this.portfolioId = portfolioId;
+    @PrePersist
+    @PreUpdate
+    protected void onUpdate() {
+        lastUpdated = new Timestamp(System.currentTimeMillis());
     }
 
-    public Long getStockId() { return stockId; }
-    public void setStockId(Long stockId) {
-        this.stockId = stockId;
+    public Long getId() {
+        return id;
     }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) {
+    public UserPortfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(UserPortfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getMarketValue() {
+        return marketValue;
+    }
+
+    public void setMarketValue(BigDecimal marketValue) {
+        this.marketValue = marketValue;
+    }
+
+    public Timestamp getLastUpdated() {
+        return lastUpdated;
     }
 }

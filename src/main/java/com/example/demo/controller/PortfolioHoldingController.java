@@ -1,30 +1,33 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.PortfolioHolding;
-import com.example.demo.service.PortfolioHoldingService;
+import com.example.demo.repository.PortfolioHoldingRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/portfolio-holdings")
+@RequestMapping("/holdings")
 public class PortfolioHoldingController {
 
-    private final PortfolioHoldingService service;
+    private final PortfolioHoldingRepository repository;
 
-    public PortfolioHoldingController(
-            PortfolioHoldingService service) {
-        this.service = service;
+    public PortfolioHoldingController(PortfolioHoldingRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping
-    public PortfolioHolding create(
-            @RequestBody PortfolioHolding holding) {
-        return service.save(holding);
+    public PortfolioHolding create(@RequestBody PortfolioHolding holding) {
+        return repository.save(holding);
     }
 
     @GetMapping
-    public List<PortfolioHolding> list() {
-        return service.getAll();
+    public List<PortfolioHolding> getAll() {
+        return repository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public PortfolioHolding getById(@PathVariable Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
