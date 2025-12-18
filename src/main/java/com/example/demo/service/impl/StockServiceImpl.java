@@ -4,6 +4,7 @@ import com.example.demo.model.Stock;
 import com.example.demo.repository.StockRepository;
 import com.example.demo.service.StockService;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

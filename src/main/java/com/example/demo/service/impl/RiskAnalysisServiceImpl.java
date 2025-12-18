@@ -4,6 +4,7 @@ import com.example.demo.model.RiskAnalysisResult;
 import com.example.demo.repository.RiskAnalysisResultRepository;
 import com.example.demo.service.RiskAnalysisService;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

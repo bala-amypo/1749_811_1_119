@@ -4,6 +4,7 @@ import com.example.demo.model.RiskThreshold;
 import com.example.demo.repository.RiskThresholdRepository;
 import com.example.demo.service.RiskThresholdService;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

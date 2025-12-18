@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.model.PortfolioHolding;
 import com.example.demo.repository.PortfolioHoldingRepository;
 import com.example.demo.service.PortfolioHoldingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

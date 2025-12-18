@@ -4,6 +4,7 @@ import com.example.demo.model.UserPortfolio;
 import com.example.demo.repository.UserPortfolioRepository;
 import com.example.demo.service.UserPortfolioService;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
