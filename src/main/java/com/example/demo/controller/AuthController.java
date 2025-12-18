@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.User;
-import com.example.demo.service.UserService;
+import com.example.demo.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,21 +10,24 @@ import java.util.List;
 @RequestMapping("/users")
 public class AuthController {
 
-    private final UserService service;
+    private final AuthRepository repository;
 
-    public AuthController(
-            UserService service) {
-        this.service = service;
+    public AuthController(UserRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping
-    public User create(
-            @RequestBody User user) {
-        return service.save(user);
+    public User create(@RequestBody User user) {
+        return repository.save(user);
     }
 
     @GetMapping
-    public List<User> list() {
-        return service.getAll();
+    public List<User> getAll() {
+        return repository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

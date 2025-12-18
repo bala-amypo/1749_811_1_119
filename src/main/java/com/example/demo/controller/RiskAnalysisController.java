@@ -8,11 +8,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/risk-analysis")
-public class RiskAnalysisResultController {
+public class RiskAnalysisController {
 
     private final RiskAnalysisResultRepository repository;
 
-    public RiskAnalysisResultController(RiskAnalysisResultRepository repository) {
+    public RiskAnalysisController(RiskAnalysisResultRepository repository) {
         this.repository = repository;
     }
 

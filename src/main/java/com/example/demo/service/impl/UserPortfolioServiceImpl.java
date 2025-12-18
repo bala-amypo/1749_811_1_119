@@ -8,19 +8,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserPortfolioServiceImpl implements UserPortfolioService {
+public class UserPortfolioServiceImpl
+        implements UserPortfolioService {
 
-    private final UserPortfolioRepository repo;
+    private final UserPortfolioRepository repository;
 
-    public UserPortfolioServiceImpl(UserPortfolioRepository repo) {
-        this.repo = repo;
+    public UserPortfolioServiceImpl(
+            UserPortfolioRepository repository) {
+        this.repository = repository;
     }
 
-    public UserPortfolio savePortfolio(UserPortfolio portfolio) {
-        return repo.save(portfolio);
+    @Override
+    public UserPortfolio save(UserPortfolio portfolio) {
+        return repository.save(portfolio);
     }
 
-    public List<UserPortfolio> getAllPortfolios() {
-        return repo.findAll();
+    @Override
+    public List<UserPortfolio> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public UserPortfolio getById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface RiskThresholdService {
 
-    RiskThreshold save(RiskThreshold riskThreshold);
+    RiskThreshold save(RiskThreshold threshold);
 
     List<RiskThreshold> getAll();
+
+    RiskThreshold getActive();
 }

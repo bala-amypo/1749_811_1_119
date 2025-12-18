@@ -19,12 +19,17 @@ public class RiskThresholdServiceImpl
     }
 
     @Override
-    public RiskThreshold save(RiskThreshold riskThreshold) {
-        return repository.save(riskThreshold);
+    public RiskThreshold save(RiskThreshold threshold) {
+        return repository.save(threshold);
     }
 
     @Override
     public List<RiskThreshold> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public RiskThreshold getActive() {
+        return repository.findByActiveTrue();
     }
 }

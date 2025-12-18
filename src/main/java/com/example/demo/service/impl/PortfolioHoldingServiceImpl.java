@@ -19,13 +19,17 @@ public class PortfolioHoldingServiceImpl
     }
 
     @Override
-    public PortfolioHolding save(
-            PortfolioHolding portfolioHolding) {
-        return repository.save(portfolioHolding);
+    public PortfolioHolding save(PortfolioHolding holding) {
+        return repository.save(holding);
     }
 
     @Override
     public List<PortfolioHolding> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public PortfolioHolding getById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

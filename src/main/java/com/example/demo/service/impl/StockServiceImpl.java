@@ -10,17 +10,24 @@ import java.util.List;
 @Service
 public class StockServiceImpl implements StockService {
 
-    private final StockRepository repo;
+    private final StockRepository repository;
 
-    public StockServiceImpl(StockRepository repo) {
-        this.repo = repo;
+    public StockServiceImpl(StockRepository repository) {
+        this.repository = repository;
     }
 
-    public Stock saveStock(Stock stock) {
-        return repo.save(stock);
+    @Override
+    public Stock save(Stock stock) {
+        return repository.save(stock);
     }
 
-    public List<Stock> getAllStocks() {
-        return repo.findAll();
+    @Override
+    public List<Stock> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Stock getById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
