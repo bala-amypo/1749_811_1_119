@@ -11,13 +11,8 @@ import java.util.List;
 @Service
 public class UserPortfolioServiceImpl
         implements UserPortfolioService {
-
-    private final UserPortfolioRepository repository;
-
-    public UserPortfolioServiceImpl(
-            UserPortfolioRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private  UserPortfolioRepository repository;
 
     @Override
     public UserPortfolio save(UserPortfolio portfolio) {
