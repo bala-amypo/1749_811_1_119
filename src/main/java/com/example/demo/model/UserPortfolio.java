@@ -13,7 +13,7 @@ public class UserPortfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private Timestamp;
+    private Timestamp createdAt;
     private String sector;
     private Boolean active;
 
