@@ -29,22 +29,25 @@ public class Stock {
         
     }
 
-    public void setName(String name){
-        this.name=name;
-    }
-    public String getName(){
-        return this.name;
-    }
     public void setTicker(String ticker){
-        this.email=ticker;
+        this.ticker=ticker;
     }
-    public String getEmail(){
-        return this.email;
+    public String getTicker(){
+        return this.ticker;
     }
-    public void setCgpa(float cgpa){
-        this.cgpa=cgpa;
+    public void setCompanyname(String companyName){
+        this.companyName=companyName;
     }
-    public float getCgpa(){
-        return this.cgpa;
+    public String getCompanyName(){
+        return this.companyName;
+    }
+    public void setSector(String sector){
+        this.sector=sector;
+    }
+    public String getSector(){
+        return this.sector;
+    }
+    public void setActive(Boolean active){
+        thio
     }
 }
