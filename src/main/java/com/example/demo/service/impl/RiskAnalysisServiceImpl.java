@@ -28,4 +28,9 @@ public class RiskAnalysisServiceImpl
     public List<RiskAnalysisResult> getAll() {
         return repository.findAll();
     }
+
+    @Override
+    public RiskAnalysisResult getById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
 }

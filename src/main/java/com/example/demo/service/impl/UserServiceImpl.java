@@ -27,4 +27,9 @@ public class UserServiceImpl
     public List<User> getAll() {
         return repository.findAll();
     }
+
+    @Override
+    public User getById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
 }
