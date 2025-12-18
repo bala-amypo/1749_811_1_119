@@ -17,14 +17,15 @@ public class Stock {
     private String sector;
     private Boolean active;
 
-    public StudentEntity(Long id,String name,String email,float cgpa){
+    public Stock(Long id,String ticker,String companyName,String sector,Boolean active){
         this.id=id;
-        this.name=name;
-        this.email=email;
-        this.cgpa=cgpa;
+        this.ticker=ticker;
+        this.companyName=companyName;
+        this.sector=sector;
+        this.active=active;
     }
 
-    public StudentEntity(){
+    public Stock(){
         
     }
 
@@ -34,8 +35,8 @@ public class Stock {
     public String getName(){
         return this.name;
     }
-    public void setEmail(String email){
-        this.email=email;
+    public void setTicker(String ticker){
+        this.email=ticker;
     }
     public String getEmail(){
         return this.email;
