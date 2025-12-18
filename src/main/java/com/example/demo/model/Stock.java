@@ -48,6 +48,9 @@ public class Stock {
         return this.sector;
     }
     public void setActive(Boolean active){
-        thio
+        this.active=active;
+    }
+    public Boolean getActive(){
+        return this.active;
     }
 }
