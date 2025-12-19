@@ -30,6 +30,6 @@ public class RiskAnalysisServiceImpl
 
     @Override
     public RiskAnalysisResult getById(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 }
