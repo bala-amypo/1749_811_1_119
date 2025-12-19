@@ -20,6 +20,9 @@ public class PortfolioHoldingServiceImpl
 
     @Override
     public PortfolioHolding save(PortfolioHolding holding) {
+         if (quantity <= 0) {
+            throw new RuntimeException("Quantity must be > 0");
+        }
         return repository.save(holding);
     }
 
