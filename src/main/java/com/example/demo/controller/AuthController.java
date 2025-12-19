@@ -30,6 +30,6 @@ public class AuthController {
         User user = userService.findByEmail(req.getEmail());
         String token = jwtUtil.generateToken(user);
 
-        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
+        return new AuthResponse(user.getId(), user.getEmail(), user.getRole(), token);
     }
 }
