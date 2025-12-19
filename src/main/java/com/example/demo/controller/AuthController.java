@@ -10,12 +10,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class AuthController {
-   private final UserRepository repository;
+  private final UserService userService;
 
-    public AuthController(
-            RiskAnalysisResultRepository repository) {
-        this.repository = repository;
-    }
+public AuthController(UserService userService) {
+    this.userService = userService;
+}
+
 
     @PostMapping
     public User create(@RequestBody User user) {
