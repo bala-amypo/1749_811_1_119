@@ -10,8 +10,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/risk-thresholds")
 public class RiskThresholdController {
-    @Autowired
-    private RiskThresholdRepository repository;
+    
+   private final RiskThresholdService riskThresholdService;
+
+public RiskThresholdController(RiskThresholdService riskThresholdService) {
+    this.riskThresholdService = riskThresholdService;
+}
+
 
     
     @PostMapping

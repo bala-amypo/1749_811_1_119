@@ -10,8 +10,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/stocks")
 public class StockController {
-    @Autowired
-    private StockRepository repository;
+    
+   private final StockService stockService;
+
+public StockController(StockService stockService) {
+    this.stockService = stockService;
+}
 
     @PostMapping
     public Stock create(@RequestBody Stock stock) {

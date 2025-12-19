@@ -11,12 +11,12 @@ import java.util.List;
 @RequestMapping("/holdings")
 public class PortfolioHoldingController {
 
-   private final PortfolioHoldingRepository repository;
+  private final PortfolioHoldingService portfolioHoldingService;
 
-    public RiskAnalysisResultServiceImpl(
-            RiskAnalysisResultRepository repository) {
-        this.repository = repository;
-    }
+public PortfolioHoldingController(PortfolioHoldingService portfolioHoldingService) {
+    this.portfolioHoldingService = portfolioHoldingService;
+}
+
 
     @PostMapping
     public PortfolioHolding create(@RequestBody PortfolioHolding holding) {

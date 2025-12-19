@@ -11,12 +11,12 @@ import java.util.List;
 @RequestMapping("/risk-analysis")
 public class RiskAnalysisController {
 
-    private final RiskAnalysisResultRepository repository;
+    private final RiskAnalysisService riskAnalysisService;
 
-    public RiskAnalysisController(
-            RiskAnalysisResultRepository repository) {
-        this.repository = repository;
-    }
+public RiskAnalysisController(RiskAnalysisService riskAnalysisService) {
+    this.riskAnalysisService = riskAnalysisService;
+}
+
     @PostMapping
     public RiskAnalysisResult create(
             @RequestBody RiskAnalysisResult result) {
