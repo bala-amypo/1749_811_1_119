@@ -10,9 +10,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/risk-analysis")
 public class RiskAnalysisController {
-    @Autowired
-    private RiskAnalysisResultRepository repository;
 
+    private final RiskAnalysisResultRepository repository;
+
+    public RiskAnalysisController(
+            RiskAnalysisResultRepository repository) {
+        this.repository = repository;
+    }
     @PostMapping
     public RiskAnalysisResult create(
             @RequestBody RiskAnalysisResult result) {

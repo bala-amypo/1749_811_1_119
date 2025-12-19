@@ -11,9 +11,13 @@ import java.util.List;
 @Service
 public class RiskAnalysisServiceImpl
         implements RiskAnalysisService {
-    @Autowired
-    private RiskAnalysisResultRepository repository;
+            
+   private final RiskAnalysisResultRepository repository;
 
+    public RiskAnalysisServiceImpl(
+            RiskAnalysisResultRepository repository) {
+        this.repository = repository;
+    }
     @Override
     public RiskAnalysisResult save(
             RiskAnalysisResult riskAnalysisResult) {
