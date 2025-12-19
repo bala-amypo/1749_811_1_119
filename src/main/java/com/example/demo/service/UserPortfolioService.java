@@ -4,10 +4,7 @@ import com.example.demo.model.UserPortfolio;
 import java.util.List;
 
 public interface UserPortfolioService {
-
-    UserPortfolio save(UserPortfolio portfolio);
-
-    List<UserPortfolio> getAll();
-
-    UserPortfolio getById(Long id);
+    UserPortfolio createPortfolio(UserPortfolio portfolio);
+    UserPortfolio getPortfolioById(Long id);
+    List<UserPortfolio> getPortfoliosByUser(Long userId);
 }

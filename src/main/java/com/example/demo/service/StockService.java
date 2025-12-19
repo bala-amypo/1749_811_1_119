@@ -4,10 +4,9 @@ import com.example.demo.model.Stock;
 import java.util.List;
 
 public interface StockService {
-
-    Stock save(Stock stock);
-
-    List<Stock> getAll();
-
-    Stock getById(Long id);
+    Stock createStock(Stock stock);
+    Stock updateStock(Long id, Stock stock);
+    Stock getStockById(Long id);
+    List<Stock> getAllStocks();
+    void deactivateStock(Long id);
 }

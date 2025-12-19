@@ -4,11 +4,6 @@ import com.example.demo.model.RiskAnalysisResult;
 import java.util.List;
 
 public interface RiskAnalysisService {
-
-    RiskAnalysisResult save(RiskAnalysisResult riskAnalysisResult);
-
-    List<RiskAnalysisResult> getAll();
-
-     RiskAnalysisResult getById(Long id);
+    RiskAnalysisResult analyzePortfolio(Long portfolioId);
+    List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId);
 }
-

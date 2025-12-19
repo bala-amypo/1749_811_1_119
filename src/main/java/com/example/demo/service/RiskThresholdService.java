@@ -1,13 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.model.RiskThreshold;
-import java.util.List;
 
 public interface RiskThresholdService {
-
-    RiskThreshold save(RiskThreshold threshold);
-
-    List<RiskThreshold> getAll();
-
-    RiskThreshold getActive();
+    RiskThreshold setThreshold(Long portfolioId, RiskThreshold threshold);
+    RiskThreshold getThresholdForPortfolio(Long portfolioId);
 }
