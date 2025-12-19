@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.PortfolioHolding;
 import com.example.demo.repository.PortfolioHoldingRepository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -11,12 +10,11 @@ import java.util.List;
 @RequestMapping("/holdings")
 public class PortfolioHoldingController {
 
-  private final PortfolioHoldingService portfolioHoldingService;
+    private final PortfolioHoldingRepository repository;
 
-public PortfolioHoldingController(PortfolioHoldingService portfolioHoldingService) {
-    this.portfolioHoldingService = portfolioHoldingService;
-}
-
+    public PortfolioHoldingController(PortfolioHoldingRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping
     public PortfolioHolding create(@RequestBody PortfolioHolding holding) {

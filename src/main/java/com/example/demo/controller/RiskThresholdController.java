@@ -3,22 +3,19 @@ package com.example.demo.controller;
 import com.example.demo.model.RiskThreshold;
 import com.example.demo.repository.RiskThresholdRepository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/risk-thresholds")
 public class RiskThresholdController {
-    
-   private final RiskThresholdService riskThresholdService;
 
-public RiskThresholdController(RiskThresholdService riskThresholdService) {
-    this.riskThresholdService = riskThresholdService;
-}
+    private final RiskThresholdRepository repository;
 
+    public RiskThresholdController(RiskThresholdRepository repository) {
+        this.repository = repository;
+    }
 
-    
     @PostMapping
     public RiskThreshold create(@RequestBody RiskThreshold threshold) {
         return repository.save(threshold);

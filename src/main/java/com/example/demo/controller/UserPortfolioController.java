@@ -3,19 +3,18 @@ package com.example.demo.controller;
 import com.example.demo.model.UserPortfolio;
 import com.example.demo.repository.UserPortfolioRepository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/portfolios")
 public class UserPortfolioController {
-    private final UserPortfolioService userPortfolioService;
 
-public UserPortfolioController(UserPortfolioService userPortfolioService) {
-    this.userPortfolioService = userPortfolioService;
-}
+    private final UserPortfolioRepository repository;
 
+    public UserPortfolioController(UserPortfolioRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping
     public UserPortfolio create(@RequestBody UserPortfolio portfolio) {
