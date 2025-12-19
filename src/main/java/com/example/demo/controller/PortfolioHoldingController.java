@@ -10,8 +10,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/holdings")
 public class PortfolioHoldingController {
-    @Autowired
-    private PortfolioHoldingRepository repository;
+
+   private final PortfolioHoldingRepository repository;
+
+    public RiskAnalysisResultServiceImpl(
+            RiskAnalysisResultRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping
     public PortfolioHolding create(@RequestBody PortfolioHolding holding) {

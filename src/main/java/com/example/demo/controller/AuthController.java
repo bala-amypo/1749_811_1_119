@@ -10,9 +10,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class AuthController {
-   private final Userrepository;
+   private final UserRepository repository;
 
-    public RiskAnalysisResultServiceImpl(
+    public AuthController(
             RiskAnalysisResultRepository repository) {
         this.repository = repository;
     }
