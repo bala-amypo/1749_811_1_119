@@ -4,7 +4,6 @@ import com.example.demo.model.UserPortfolio;
 import com.example.demo.repository.UserPortfolioRepository;
 import com.example.demo.service.UserPortfolioService;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -12,12 +11,12 @@ import java.util.List;
 public class UserPortfolioServiceImpl
         implements UserPortfolioService {
 
-  private final UserPortfolioRepository userPortfolioRepository;
+    private final UserPortfolioRepository repository;
 
-    public UserPortfolioServiceImpl(UserPortfolioRepository userPortfolioRepository) {
-        this.userPortfolioRepository = userPortfolioRepository;
-}
-
+    public UserPortfolioServiceImpl(
+            UserPortfolioRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public UserPortfolio save(UserPortfolio portfolio) {

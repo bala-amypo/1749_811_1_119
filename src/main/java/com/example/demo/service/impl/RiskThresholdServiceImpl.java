@@ -4,19 +4,19 @@ import com.example.demo.model.RiskThreshold;
 import com.example.demo.repository.RiskThresholdRepository;
 import com.example.demo.service.RiskThresholdService;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Service
 public class RiskThresholdServiceImpl
         implements RiskThresholdService {
-   private final RiskThresholdRepository riskThresholdRepository;
 
-public RiskThresholdServiceImpl(RiskThresholdRepository riskThresholdRepository) {
-    this.riskThresholdRepository = riskThresholdRepository;
-}
+    private final RiskThresholdRepository repository;
 
+    public RiskThresholdServiceImpl(
+            RiskThresholdRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public RiskThreshold save(RiskThreshold threshold) {

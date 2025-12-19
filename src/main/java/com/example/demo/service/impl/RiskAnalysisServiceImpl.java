@@ -4,24 +4,23 @@ import com.example.demo.model.RiskAnalysisResult;
 import com.example.demo.repository.RiskAnalysisResultRepository;
 import com.example.demo.service.RiskAnalysisService;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Service
-public class RiskAnalysisServiceImpl
+public class RiskAnalysistServiceImpl
         implements RiskAnalysisService {
 
-   private final RiskAnalysisResultRepository riskAnalysisResultRepository;
+    private final RiskAnalysisResultRepository repository;
 
-public RiskAnalysisServiceImpl(RiskAnalysisResultRepository riskAnalysisResultRepository) {
-    this.riskAnalysisResultRepository = riskAnalysisResultRepository;
-}
+    public RiskAnalysisServiceImpl(
+            RiskAnalysisResultRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
-    public RiskAnalysisResult save(
-            RiskAnalysisResult riskAnalysisResult) {
-        return repository.save(riskAnalysisResult);
+    public RiskAnalysisResult save(RiskAnalysisResult result) {
+        return repository.save(result);
     }
 
     @Override
