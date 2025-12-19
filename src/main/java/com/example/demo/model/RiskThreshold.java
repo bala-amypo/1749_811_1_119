@@ -1,60 +1,27 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = "thresholdName")
-)
+@Table(name = "risk_thresholds")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RiskThreshold {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String thresholdName;
+    @ManyToOne
+    private UserPortfolio portfolio;
 
     private Double maxSingleStockPercentage;
+    private Double maxOverallVolatility;
 
-    private Double maxSectorPercentage;
-
-    private Boolean active;
-
-    public RiskThreshold() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getThresholdName() {
-        return thresholdName;
-    }
-
-    public void setThresholdName(String thresholdName) {
-        this.thresholdName = thresholdName;
-    }
-
-    public Double getMaxSingleStockPercentage() {
-        return maxSingleStockPercentage;
-    }
-
-    public void setMaxSingleStockPercentage(Double maxSingleStockPercentage) {
+    public RiskThreshold(UserPortfolio portfolio, Double maxSingleStockPercentage, Double maxOverallVolatility) {
+        this.portfolio = portfolio;
         this.maxSingleStockPercentage = maxSingleStockPercentage;
-    }
-
-    public Double getMaxSectorPercentage() {
-        return maxSectorPercentage;
-    }
-
-    public void setMaxSectorPercentage(Double maxSectorPercentage) {
-        this.maxSectorPercentage = maxSectorPercentage;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
+        this.maxOverallVolatility = maxOverallVolatility;
     }
 }
