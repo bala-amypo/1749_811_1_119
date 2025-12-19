@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class PortfolioHoldingServiceImpl
         implements PortfolioHoldingService {
-    @Autowired
-    private PortfolioHoldingRepository repository;
+   private final PortfolioHoldingRepository portfolioHoldingRepository;
+
+public PortfolioHoldingServiceImpl(PortfolioHoldingRepository portfolioHoldingRepository) {
+    this.portfolioHoldingRepository = portfolioHoldingRepository;
+}
+
 
     @Override
     public PortfolioHolding save(PortfolioHolding holding) {

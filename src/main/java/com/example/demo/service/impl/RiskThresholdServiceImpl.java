@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class RiskThresholdServiceImpl
         implements RiskThresholdService {
-    @Autowired
-    private RiskThresholdRepository repository;
+   private final RiskThresholdRepository riskThresholdRepository;
+
+public RiskThresholdServiceImpl(RiskThresholdRepository riskThresholdRepository) {
+    this.riskThresholdRepository = riskThresholdRepository;
+}
+
 
     @Override
     public RiskThreshold save(RiskThreshold threshold) {

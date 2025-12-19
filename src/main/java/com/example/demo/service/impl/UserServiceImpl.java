@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl
         implements UserService {
-    @Autowired
-    private  UserRepository repository;
+            
+   private final UserRepository userRepository;
+
+public UserServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
+}
 
     @Override
     public User save(User user) {

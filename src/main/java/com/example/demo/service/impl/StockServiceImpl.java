@@ -10,8 +10,12 @@ import java.util.List;
 
 @Service
 public class StockServiceImpl implements StockService {
-    @Autowired
-    private StockRepository repository;
+    private final StockRepository stockRepository;
+
+public StockServiceImpl(StockRepository stockRepository) {
+    this.stockRepository = stockRepository;
+}
+
 
     @Override
     public Stock save(Stock stock) {
