@@ -1,38 +1,51 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.PortfolioHolding;
-import com.example.demo.repository.PortfolioHoldingRepository;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.PortfolioHoldingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PortfolioHoldingServiceImpl
-        implements PortfolioHoldingService {
+public class PortfolioHoldingServiceImpl implements PortfolioHoldingService {
 
-    private final PortfolioHoldingRepository repository;
+    private final PortfolioHoldingRepository holdingRepo;
+    private final UserPortfolioRepository portfolioRepo;
+    private final StockRepository stockRepo;
 
     public PortfolioHoldingServiceImpl(
-            PortfolioHoldingRepository repository) {
-        this.repository = repository;
+            PortfolioHoldingRepository holdingRepo,
+            UserPortfolioRepository portfolioRepo,
+            StockRepository stockRepo) {
+        this.holdingRepo = holdingRepo;
+        this.portfolioRepo = portfolioRepo;
+        this.stockRepo = stockRepo;
     }
 
-    @Override
-    public PortfolioHolding save(PortfolioHolding holding) {
-         if (holding.getQuantity() <= 0) {
-            throw new RuntimeException("Quantity must be > 0");
+    public PortfolioHolding addHolding(Long portfolioId, Long stockId, PortfolioHolding holding) {
+
+        if (holding.getQuantity() <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
         }
-        return repository.save(holding);
+        if (holding.getMarketValue().signum() < 0) {
+            throw new IllegalArgumentException("Market value must be non-negative");
+        }
+
+        UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found"));
+
+        Stock stock = stockRepo.findById(stockId)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock not found"));
+
+        holding.setPortfolio(portfolio);
+        holding.setStock(stock);
+
+        return holdingRepo.save(holding);
     }
 
-    @Override
-    public List<PortfolioHolding> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public PortfolioHolding getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+    public List<PortfolioHolding> getHoldingsByPortfolio(Long portfolioId) {
+        return holdingRepo.findByPortfolioId(portfolioId);
     }
 }
