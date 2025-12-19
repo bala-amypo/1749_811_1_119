@@ -10,8 +10,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/portfolios")
 public class UserPortfolioController {
-    @Autowired
-    private UserPortfolioRepository repository;
+    private final UserService userService;
+
+public UserPortfolioController(UserService userService) {
+    this.userService = userService;
+}
 
     @PostMapping
     public UserPortfolio create(@RequestBody UserPortfolio portfolio) {
