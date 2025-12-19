@@ -59,4 +59,6 @@ public class Stock {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+   
 }
