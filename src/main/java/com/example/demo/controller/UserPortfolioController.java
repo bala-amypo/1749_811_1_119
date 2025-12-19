@@ -1,33 +1,33 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.UserPortfolio;
-import com.example.demo.repository.UserPortfolioRepository;
+import com.example.demo.service.UserPortfolioService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/portfolios")
+@RequestMapping("/api/portfolios")
 public class UserPortfolioController {
 
-    private final UserPortfolioRepository repository;
+    private final UserPortfolioService portfolioService;
 
-    public UserPortfolioController(UserPortfolioRepository repository) {
-        this.repository = repository;
+    public UserPortfolioController(UserPortfolioService portfolioService) {
+        this.portfolioService = portfolioService;
     }
 
     @PostMapping
-    public UserPortfolio create(@RequestBody UserPortfolio portfolio) {
-        return repository.save(portfolio);
-    }
-
-    @GetMapping
-    public List<UserPortfolio> getAll() {
-        return repository.findAll();
+    public UserPortfolio createPortfolio(@RequestBody UserPortfolio portfolio) {
+        return portfolioService.createPortfolio(portfolio);
     }
 
     @GetMapping("/{id}")
-    public UserPortfolio getById(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+    public UserPortfolio getPortfolio(@PathVariable Long id) {
+        return portfolioService.getPortfolioById(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<UserPortfolio> getPortfoliosByUser(@PathVariable Long userId) {
+        return portfolioService.getPortfoliosByUser(userId);
     }
 }

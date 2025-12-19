@@ -1,33 +1,43 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Stock;
-import com.example.demo.repository.StockRepository;
+import com.example.demo.service.StockService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/stocks")
+@RequestMapping("/api/stocks")
 public class StockController {
 
-    private final StockRepository repository;
+    private final StockService stockService;
 
-    public StockController(StockRepository repository) {
-        this.repository = repository;
+    public StockController(StockService stockService) {
+        this.stockService = stockService;
     }
 
     @PostMapping
-    public Stock create(@RequestBody Stock stock) {
-        return repository.save(stock);
+    public Stock createStock(@RequestBody Stock stock) {
+        return stockService.createStock(stock);
     }
 
-    @GetMapping
-    public List<Stock> getAll() {
-        return repository.findAll();
+    @PutMapping("/{id}")
+    public Stock updateStock(@PathVariable Long id, @RequestBody Stock stock) {
+        return stockService.updateStock(id, stock);
     }
 
     @GetMapping("/{id}")
-    public Stock getById(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+    public Stock getStock(@PathVariable Long id) {
+        return stockService.getStockById(id);
+    }
+
+    @GetMapping
+    public List<Stock> getAllStocks() {
+        return stockService.getAllStocks();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deactivateStock(@PathVariable Long id) {
+        stockService.deactivateStock(id);
     }
 }

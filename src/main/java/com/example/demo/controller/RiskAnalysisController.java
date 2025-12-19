@@ -1,34 +1,28 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.RiskAnalysisResult;
-import com.example.demo.repository.RiskAnalysisResultRepository;
+import com.example.demo.service.RiskAnalysisService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/risk-analysis")
+@RequestMapping("/api/risk-analysis")
 public class RiskAnalysisController {
 
-    private final RiskAnalysisResultRepository repository;
+    private final RiskAnalysisService analysisService;
 
-    public RiskAnalysisController(RiskAnalysisResultRepository repository) {
-        this.repository = repository;
+    public RiskAnalysisController(RiskAnalysisService analysisService) {
+        this.analysisService = analysisService;
     }
 
-    @PostMapping
-    public RiskAnalysisResult create(
-            @RequestBody RiskAnalysisResult result) {
-        return repository.save(result);
+    @PostMapping("/{portfolioId}")
+    public RiskAnalysisResult analyze(@PathVariable Long portfolioId) {
+        return analysisService.analyzePortfolio(portfolioId);
     }
 
-    @GetMapping
-    public List<RiskAnalysisResult> getAll() {
-        return repository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public RiskAnalysisResult getById(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+    @GetMapping("/{portfolioId}")
+    public List<RiskAnalysisResult> getAnalyses(@PathVariable Long portfolioId) {
+        return analysisService.getAnalysesForPortfolio(portfolioId);
     }
 }
