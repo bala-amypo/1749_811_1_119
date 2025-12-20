@@ -12,58 +12,58 @@ import java.util.List;
 @Service
 public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
-    private final PortfolioHoldingRepository holdingRepo;
-    private final RiskThresholdRepository thresholdRepo;
-    private final RiskAnalysisResultRepository analysisRepo;
-    private final UserPortfolioRepository portfolioRepo;
+    private final UserPortfolioRepository portfolioRepository;
+    private final PortfolioHoldingRepository holdingRepository;
+    private final RiskThresholdRepository thresholdRepository;
+    private final RiskAnalysisResultRepository analysisRepository;
 
-    public RiskAnalysisServiceImpl(
-            PortfolioHoldingRepository holdingRepo,
-            RiskThresholdRepository thresholdRepo,
-            RiskAnalysisResultRepository analysisRepo,
-            UserPortfolioRepository portfolioRepo) {
-        this.holdingRepo = holdingRepo;
-        this.thresholdRepo = thresholdRepo;
-        this.analysisRepo = analysisRepo;
-        this.portfolioRepo = portfolioRepo;
+    public RiskAnalysisServiceImpl(UserPortfolioRepository portfolioRepository,
+                                   PortfolioHoldingRepository holdingRepository,
+                                   RiskThresholdRepository thresholdRepository,
+                                   RiskAnalysisResultRepository analysisRepository) {
+        this.portfolioRepository = portfolioRepository;
+        this.holdingRepository = holdingRepository;
+        this.thresholdRepository = thresholdRepository;
+        this.analysisRepository = analysisRepository;
     }
 
+    @Override
     public RiskAnalysisResult analyzePortfolio(Long portfolioId) {
-
-        UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
+        UserPortfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new RuntimeException("Portfolio not found"));
 
-        List<PortfolioHolding> holdings = holdingRepo.findByPortfolioId(portfolioId);
-        RiskThreshold threshold = thresholdRepo.findByPortfolioId(portfolioId).orElse(null);
+        List<PortfolioHolding> holdings = holdingRepository.findByPortfolioId(portfolioId);
 
-        BigDecimal total = holdings.stream()
+        if (holdings.isEmpty())
+            throw new RuntimeException("No holdings found for portfolio");
+
+        BigDecimal totalValue = holdings.stream()
                 .map(PortfolioHolding::getMarketValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        double highest = 0;
+        double highestPercentage = holdings.stream()
+                .mapToDouble(h -> h.getMarketValue().divide(totalValue, 6, BigDecimal.ROUND_HALF_UP).doubleValue() * 100)
+                .max()
+                .orElse(0);
 
-        for (PortfolioHolding h : holdings) {
-            double percent = h.getMarketValue()
-                    .multiply(BigDecimal.valueOf(100))
-                    .divide(total, 2, BigDecimal.ROUND_HALF_UP)
-                    .doubleValue();
-            highest = Math.max(highest, percent);
-        }
+        // Get threshold
+        RiskThreshold threshold = thresholdRepository.findByPortfolioId(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Risk threshold not found"));
 
-        boolean highRisk = threshold != null &&
-                highest > threshold.getMaxSingleStockPercentage();
+        boolean isHighRisk = highestPercentage > threshold.getMaxSingleStockPercentage();
 
         RiskAnalysisResult result = new RiskAnalysisResult(
                 portfolio,
                 LocalDateTime.now(),
-                highest,
-                highRisk
+                highestPercentage,
+                isHighRisk
         );
 
-        return analysisRepo.save(result);
+        return analysisRepository.save(result);
     }
 
+    @Override
     public List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId) {
-        return analysisRepo.findByPortfolioId(portfolioId);
+        return analysisRepository.findByPortfolioId(portfolioId);
     }
 }

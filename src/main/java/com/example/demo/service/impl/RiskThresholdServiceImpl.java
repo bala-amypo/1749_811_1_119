@@ -1,38 +1,39 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.RiskThreshold;
+import com.example.demo.model.UserPortfolio;
+import com.example.demo.repository.RiskThresholdRepository;
+import com.example.demo.repository.UserPortfolioRepository;
 import com.example.demo.service.RiskThresholdService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RiskThresholdServiceImpl implements RiskThresholdService {
 
-    private final RiskThresholdRepository repo;
-    private final UserPortfolioRepository portfolioRepo;
+    private final RiskThresholdRepository thresholdRepository;
+    private final UserPortfolioRepository portfolioRepository;
 
-    public RiskThresholdServiceImpl(RiskThresholdRepository repo, UserPortfolioRepository portfolioRepo) {
-        this.repo = repo;
-        this.portfolioRepo = portfolioRepo;
+    public RiskThresholdServiceImpl(RiskThresholdRepository thresholdRepository,
+                                    UserPortfolioRepository portfolioRepository) {
+        this.thresholdRepository = thresholdRepository;
+        this.portfolioRepository = portfolioRepository;
     }
 
+    @Override
     public RiskThreshold setThreshold(Long portfolioId, RiskThreshold threshold) {
+        UserPortfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
 
-        if (threshold.getMaxSingleStockPercentage() < 0 ||
-            threshold.getMaxSingleStockPercentage() > 100) {
-            throw new IllegalArgumentException("Percentage must be between 0 and 100");
-        }
-
-        UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
-                .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found"));
+        if (threshold.getMaxSingleStockPercentage() < 0 || threshold.getMaxSingleStockPercentage() > 100)
+            throw new IllegalArgumentException("maxSingleStockPercentage must be between 0 and 100");
 
         threshold.setPortfolio(portfolio);
-        return repo.save(threshold);
+        return thresholdRepository.save(threshold);
     }
 
+    @Override
     public RiskThreshold getThresholdForPortfolio(Long portfolioId) {
-        return repo.findByPortfolioId(portfolioId)
-                .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
+        return thresholdRepository.findByPortfolioId(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Risk threshold not found for portfolio"));
     }
 }
