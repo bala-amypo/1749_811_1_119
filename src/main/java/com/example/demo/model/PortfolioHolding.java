@@ -11,17 +11,19 @@ public class PortfolioHolding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantity;
-
-    private BigDecimal marketValue;
-
     @ManyToOne
-    @JoinColumn(name = "portfolio_id")
+    @JoinColumn(name = "portfolio_id", nullable = false)
     private UserPortfolio portfolio;
 
     @ManyToOne
-    @JoinColumn(name = "stock_id")
+    @JoinColumn(name = "stock_id", nullable = false)
     private Stock stock;
+
+    @Column(nullable = false)
+    private Double quantity;
+
+    @Column(nullable = false)
+    private BigDecimal marketValue;
 
     public PortfolioHolding() {}
 
@@ -32,18 +34,15 @@ public class PortfolioHolding {
         this.marketValue = marketValue;
     }
 
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
-    public Double getQuantity() { return quantity; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
-
-    public BigDecimal getMarketValue() { return marketValue; }
-    public void setMarketValue(BigDecimal marketValue) { this.marketValue = marketValue; }
-
     public UserPortfolio getPortfolio() { return portfolio; }
     public void setPortfolio(UserPortfolio portfolio) { this.portfolio = portfolio; }
-
     public Stock getStock() { return stock; }
     public void setStock(Stock stock) { this.stock = stock; }
+    public Double getQuantity() { return quantity; }
+    public void setQuantity(Double quantity) { this.quantity = quantity; }
+    public BigDecimal getMarketValue() { return marketValue; }
+    public void setMarketValue(BigDecimal marketValue) { this.marketValue = marketValue; }
 }

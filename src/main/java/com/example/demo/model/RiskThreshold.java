@@ -10,31 +10,46 @@ public class RiskThreshold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id", nullable = false)
+    private UserPortfolio portfolio;
+
+    @Column(nullable = false)
     private Double maxSingleStockPercentage;
 
     private Double maxOverallVolatility;
 
-    @ManyToOne
-    @JoinColumn(name = "portfolio_id")
-    private UserPortfolio portfolio;
-
     public RiskThreshold() {}
 
-    public RiskThreshold(UserPortfolio portfolio, Double maxSingleStockPercentage, Double maxOverallVolatility) {
-        this.portfolio = portfolio;
-        this.maxSingleStockPercentage = maxSingleStockPercentage;
-        this.maxOverallVolatility = maxOverallVolatility;
+    public Long getId() {
+        return id;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Double getMaxSingleStockPercentage() { return maxSingleStockPercentage; }
-    public void setMaxSingleStockPercentage(Double maxSingleStockPercentage) { this.maxSingleStockPercentage = maxSingleStockPercentage; }
+    public UserPortfolio getPortfolio() {
+        return portfolio;
+    }
 
-    public Double getMaxOverallVolatility() { return maxOverallVolatility; }
-    public void setMaxOverallVolatility(Double maxOverallVolatility) { this.maxOverallVolatility = maxOverallVolatility; }
+    public void setPortfolio(UserPortfolio portfolio) {
+        this.portfolio = portfolio;
+    }
 
-    public UserPortfolio getPortfolio() { return portfolio; }
-    public void setPortfolio(UserPortfolio portfolio) { this.portfolio = portfolio; }
+    public Double getMaxSingleStockPercentage() {
+        return maxSingleStockPercentage;
+    }
+
+    public void setMaxSingleStockPercentage(Double maxSingleStockPercentage) {
+        this.maxSingleStockPercentage = maxSingleStockPercentage;
+    }
+
+    public Double getMaxOverallVolatility() {
+        return maxOverallVolatility;
+    }
+
+    public void setMaxOverallVolatility(Double maxOverallVolatility) {
+        this.maxOverallVolatility = maxOverallVolatility;
+    }
 }

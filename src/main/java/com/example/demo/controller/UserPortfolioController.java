@@ -15,18 +15,28 @@ public class UserPortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    @PostMapping("/{userId}")
-    public UserPortfolio createPortfolio(@PathVariable Long userId, @RequestBody UserPortfolio portfolio) {
-        return portfolioService.createPortfolio(portfolio, userId);
+    @PostMapping
+    public UserPortfolio createPortfolio(@RequestBody UserPortfolio portfolio) {
+        return portfolioService.createPortfolio(portfolio);
     }
 
     @GetMapping("/{id}")
-    public UserPortfolio getPortfolio(@PathVariable Long id) {
+    public UserPortfolio getPortfolioById(@PathVariable Long id) {
         return portfolioService.getPortfolioById(id);
     }
 
     @GetMapping("/user/{userId}")
     public List<UserPortfolio> getPortfoliosByUser(@PathVariable Long userId) {
         return portfolioService.getPortfoliosByUser(userId);
+    }
+
+    @PutMapping("/{id}")
+    public UserPortfolio updatePortfolio(@PathVariable Long id, @RequestBody UserPortfolio portfolio) {
+        return portfolioService.updatePortfolio(id, portfolio);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePortfolio(@PathVariable Long id) {
+        portfolioService.deletePortfolio(id);
     }
 }
