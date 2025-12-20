@@ -16,26 +16,22 @@ public class RiskAnalysisController {
         this.service = service;
     }
 
-    // CREATE (RUN ANALYSIS)
     @PostMapping("/portfolio/{portfolioId}")
     public RiskAnalysisResult analyze(@PathVariable Long portfolioId) {
         return service.analyze(portfolioId);
     }
 
-    // READ BY ID
     @GetMapping("/{id}")
     public RiskAnalysisResult getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    // READ BY PORTFOLIO
     @GetMapping("/portfolio/{portfolioId}")
     public List<RiskAnalysisResult> getByPortfolio(
             @PathVariable Long portfolioId) {
         return service.getByPortfolio(portfolioId);
     }
 
-    // READ ALL
     @GetMapping
     public List<RiskAnalysisResult> getAll() {
         return service.getAll();
