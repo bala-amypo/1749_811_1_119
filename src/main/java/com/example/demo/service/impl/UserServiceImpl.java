@@ -32,13 +32,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    @Override
-    public User update(Long id, User user) {
-        User existing = getById(id);
-        existing.setName(user.getName());
-        existing.setEmail(user.getEmail());
-        return repository.save(existing);
-    }
+   
 
    
 }
