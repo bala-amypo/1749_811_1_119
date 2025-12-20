@@ -2,44 +2,41 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Stock;
 import com.example.demo.service.StockService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/stocks")
-@Tag(name = "Stocks")
 public class StockController {
 
-    private final StockService service;
+    private final StockService stockService;
 
-    public StockController(StockService service) {
-        this.service = service;
+    public StockController(StockService stockService) {
+        this.stockService = stockService;
     }
 
     @PostMapping
-    public Stock create(@RequestBody Stock stock) {
-        return service.save(stock);
+    public Stock createStock(@RequestBody Stock stock) {
+        return stockService.createStock(stock);
     }
 
     @PutMapping("/{id}")
-    public Stock update(@PathVariable Long id, @RequestBody Stock stock) {
-        return service.update(id, stock);
+    public Stock updateStock(@PathVariable Long id, @RequestBody Stock stock) {
+        return stockService.updateStock(id, stock);
     }
 
     @GetMapping("/{id}")
-    public Stock get(@PathVariable Long id) {
-        return service.getById(id);
+    public Stock getStock(@PathVariable Long id) {
+        return stockService.getStockById(id);
     }
 
     @GetMapping
-    public List<Stock> getAll() {
-        return service.getAll();
+    public List<Stock> getAllStocks() {
+        return stockService.getAllStocks();
     }
 
-    @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        service.deactivate(id);
+    @PatchMapping("/{id}/deactivate")
+    public void deactivateStock(@PathVariable Long id) {
+        stockService.deactivateStock(id);
     }
 }
