@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl
+        implements UserService {
 
     private final UserRepository repository;
 
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(
+            UserRepository repository) {
         this.repository = repository;
     }
 
@@ -28,11 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return repository.findById(id).orElse(null);
     }
-
-   
-
-   
 }
