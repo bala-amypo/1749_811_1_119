@@ -6,16 +6,18 @@ import java.util.List;
 @Entity
 @Table(name = "stocks")
 public class Stock {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String ticker;
 
+    @Column(nullable = false)
     private String companyName;
+
     private String sector;
+
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
@@ -30,7 +32,6 @@ public class Stock {
         this.isActive = isActive;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getTicker() { return ticker; }
@@ -41,4 +42,6 @@ public class Stock {
     public void setSector(String sector) { this.sector = sector; }
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+    public List<PortfolioHolding> getHoldings() { return holdings; }
+    public void setHoldings(List<PortfolioHolding> holdings) { this.holdings = holdings; }
 }

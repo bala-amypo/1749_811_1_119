@@ -26,7 +26,7 @@ public class StockController {
     }
 
     @GetMapping("/{id}")
-    public Stock getStock(@PathVariable Long id) {
+    public Stock getStockById(@PathVariable Long id) {
         return stockService.getStockById(id);
     }
 

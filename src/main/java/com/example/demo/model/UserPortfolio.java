@@ -12,16 +12,20 @@ public class UserPortfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
     private String portfolioName;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioHolding> holdings;
+
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    private List<RiskAnalysisResult> riskAnalyses;
 
     public UserPortfolio() {}
 
@@ -31,19 +35,17 @@ public class UserPortfolio {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
-    public String getPortfolioName() { return portfolioName; }
-    public void setPortfolioName(String portfolioName) { this.portfolioName = portfolioName; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
+    public String getPortfolioName() { return portfolioName; }
+    public void setPortfolioName(String portfolioName) { this.portfolioName = portfolioName; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public List<PortfolioHolding> getHoldings() { return holdings; }
     public void setHoldings(List<PortfolioHolding> holdings) { this.holdings = holdings; }
+    public List<RiskAnalysisResult> getRiskAnalyses() { return riskAnalyses; }
+    public void setRiskAnalyses(List<RiskAnalysisResult> riskAnalyses) { this.riskAnalyses = riskAnalyses; }
 }
