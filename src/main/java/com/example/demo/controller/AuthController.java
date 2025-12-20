@@ -1,35 +1,33 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
 import com.example.demo.model.User;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
-import org.springframework.security.authentication.*;
+import com.example.demo.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/users")
 public class AuthController {
 
-    private final AuthenticationManager manager;
-    private final JwtUtil jwtUtil;
-    private final UserService userService;
+    private final UserRepository repository;
 
-    public AuthController(AuthenticationManager manager, JwtUtil jwtUtil, UserService userService) {
-        this.manager = manager;
-        this.jwtUtil = jwtUtil;
-        this.userService = userService;
+    public AuthController(UserRepository repository) {
+        this.repository = repository;
     }
 
-    @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest req) {
-        manager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
-        );
+    @PostMapping
+    public User create(@RequestBody User user) {
+        return repository.save(user);
+    }
 
-        User user = userService.findByEmail(req.getEmail());
-        String token = jwtUtil.generateToken(user);
+    @GetMapping
+    public List<User> getAll() {
+        return repository.findAll();
+    }
 
-        return new AuthResponse(user.getId(), user.getEmail(), user.getRole(), token);
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
