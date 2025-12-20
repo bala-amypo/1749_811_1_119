@@ -10,19 +10,46 @@ import java.util.List;
 @RequestMapping("/api/risk-analysis")
 public class RiskAnalysisController {
 
-    private final RiskAnalysisService analysisService;
+    private final RiskAnalysisService service;
 
-    public RiskAnalysisController(RiskAnalysisService analysisService) {
-        this.analysisService = analysisService;
+    public RiskAnalysisController(RiskAnalysisService service) {
+        this.service = service;
     }
 
-    @PostMapping("/{portfolioId}")
-    public RiskAnalysisResult analyzePortfolio(@PathVariable Long portfolioId) {
-        return analysisService.analyzePortfolio(portfolioId);
+    // CREATE (RUN ANALYSIS)
+    @PostMapping("/portfolio/{portfolioId}")
+    public RiskAnalysisResult analyze(@PathVariable Long portfolioId) {
+        return service.analyze(portfolioId);
     }
 
-    @GetMapping("/{portfolioId}")
-    public List<RiskAnalysisResult> getAnalyses(@PathVariable Long portfolioId) {
-        return analysisService.getAnalysesForPortfolio(portfolioId);
+    // READ BY ID
+    @GetMapping("/{id}")
+    public RiskAnalysisResult getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
+    // READ BY PORTFOLIO
+    @GetMapping("/portfolio/{portfolioId}")
+    public List<RiskAnalysisResult> getByPortfolio(
+            @PathVariable Long portfolioId) {
+        return service.getByPortfolio(portfolioId);
+    }
+
+    // READ ALL
+    @GetMapping
+    public List<RiskAnalysisResult> getAll() {
+        return service.getAll();
+    }
+
+    @PutMapping("/{id}")
+    public RiskAnalysisResult update(
+            @PathVariable Long id,
+            @RequestBody RiskAnalysisResult result) {
+        return service.update(id, result);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }
