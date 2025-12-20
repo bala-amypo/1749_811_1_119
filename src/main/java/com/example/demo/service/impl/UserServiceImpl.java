@@ -29,7 +29,7 @@ public class UserServiceImpl
     }
 
     @Override
-    public User findById(Long id) {
+    public User getById(Long id) {
         return repository.findById(id).orElse(null);
     }
 }
