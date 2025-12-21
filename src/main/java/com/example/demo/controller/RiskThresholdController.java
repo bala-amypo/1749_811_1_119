@@ -17,15 +17,15 @@ public class RiskThresholdController {
     }
 
     @PostMapping("/portfolio/{portfolioId}")
-    public RiskThreshold create(
+    public RiskThreshold createThreshold(
             @PathVariable Long portfolioId,
             @RequestBody RiskThreshold threshold) {
-        return service.create(portfolioId, threshold);
+        return service.createThreshold(portfolioId, threshold);
     }
 
     @GetMapping("/{id}")
-    public RiskThreshold getById(@PathVariable Long id) {
-        return service.getById(id);
+    public RiskThreshold getThresholdById(@PathVariable Long id) {
+        return service.getThresholdById(id);
     }
 
     @GetMapping("/portfolio/{portfolioId}")
@@ -39,10 +39,10 @@ public class RiskThresholdController {
     }
 
     @PutMapping("/{id}")
-    public RiskThreshold update(
+    public RiskThreshold updateThreshold(
             @PathVariable Long id,
             @RequestBody RiskThreshold threshold) {
-        return service.update(id, threshold);
+        return service.updateThreshold(id, threshold);
     }
 
     @DeleteMapping("/{id}")
