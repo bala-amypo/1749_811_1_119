@@ -16,10 +16,10 @@ public class PortfolioHoldingController {
     }
 
     @PostMapping("/{portfolioId}/{stockId}")
-    public PortfolioHolding addHolding(@PathVariable Long portfolioId,
+    public PortfolioHolding createHolding(@PathVariable Long portfolioId,
                                        @PathVariable Long stockId,
                                        @RequestBody PortfolioHolding holding) {
-        return holdingService.addHolding(portfolioId, stockId, holding);
+        return holdingService.createHolding(portfolioId, stockId, holding);
     }
 
     @GetMapping("/{id}")

@@ -27,7 +27,7 @@ public class PortfolioHoldingServiceImpl implements PortfolioHoldingService {
     }
 
     @Override
-    public PortfolioHolding addHolding(Long portfolioId, Long stockId, PortfolioHolding holding) {
+    public PortfolioHolding createHolding(Long portfolioId, Long stockId, PortfolioHolding holding) {
         UserPortfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Portfolio not found"));
         Stock stock = stockRepository.findById(stockId)

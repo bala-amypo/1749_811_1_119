@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface RiskThresholdService {
 
-    RiskThreshold create(Long portfolioId, RiskThreshold threshold);
+    RiskThreshold createThreshold( RiskThreshold threshold);
 
-    RiskThreshold update(Long id, RiskThreshold threshold);
+    RiskThreshold updateThreshold(Long id, RiskThreshold threshold);
 
-    RiskThreshold getById(Long id);
+    RiskThreshold getThresholdById(Long id);
 
     RiskThreshold getByPortfolioId(Long portfolioId);
 
