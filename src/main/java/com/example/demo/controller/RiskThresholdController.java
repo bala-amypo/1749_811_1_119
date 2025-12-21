@@ -16,11 +16,9 @@ public class RiskThresholdController {
         this.service = service;
     }
 
-    @PostMapping("/portfolio/{portfolioId}")
-    public RiskThreshold createThreshold(
-            @PathVariable Long portfolioId,
-            @RequestBody RiskThreshold threshold) {
-        return service.createThreshold(portfolioId, threshold);
+    @PostMapping
+    public RiskThreshold createThreshold(@RequestBody RiskThreshold threshold) {
+        return service.createThreshold(threshold);
     }
 
     @GetMapping("/{id}")
@@ -28,9 +26,9 @@ public class RiskThresholdController {
         return service.getThresholdById(id);
     }
 
-    @GetMapping("/portfolio/{portfolioId}")
-    public RiskThreshold getByPortfolio(@PathVariable Long portfolioId) {
-        return service.getByPortfolioId(portfolioId);
+    @GetMapping("/name/{thresholdName}")
+    public RiskThreshold getByThresholdName(@PathVariable String thresholdName) {
+        return service.getByThresholdName(thresholdName);
     }
 
     @GetMapping

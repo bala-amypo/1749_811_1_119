@@ -3,21 +3,29 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "risk_thresholds")
+@Table(
+        name = "risk_thresholds",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"threshold_name"})
+        }
+)
 public class RiskThreshold {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "portfolio_id", nullable = false)
-    private UserPortfolio portfolio;
+    @Column(name = "threshold_name", nullable = false, unique = true)
+    private String thresholdName;
 
     @Column(nullable = false)
-    private Double maxSingleStockPercentage;
+    private double maxSingleStockPercentage;
 
-    private Double maxOverallVolatility;
+    @Column(nullable = false)
+    private double maxSectorPercentage;
+
+    @Column(nullable = false)
+    private boolean active;
 
     public RiskThreshold() {}
 
@@ -29,27 +37,35 @@ public class RiskThreshold {
         this.id = id;
     }
 
-    public UserPortfolio getPortfolio() {
-        return portfolio;
+    public String getThresholdName() {
+        return thresholdName;
     }
 
-    public void setPortfolio(UserPortfolio portfolio) {
-        this.portfolio = portfolio;
+    public void setThresholdName(String thresholdName) {
+        this.thresholdName = thresholdName;
     }
 
-    public Double getMaxSingleStockPercentage() {
+    public double getMaxSingleStockPercentage() {
         return maxSingleStockPercentage;
     }
 
-    public void setMaxSingleStockPercentage(Double maxSingleStockPercentage) {
+    public void setMaxSingleStockPercentage(double maxSingleStockPercentage) {
         this.maxSingleStockPercentage = maxSingleStockPercentage;
     }
 
-    public Double getMaxOverallVolatility() {
-        return maxOverallVolatility;
+    public double getMaxSectorPercentage() {
+        return maxSectorPercentage;
     }
 
-    public void setMaxOverallVolatility(Double maxOverallVolatility) {
-        this.maxOverallVolatility = maxOverallVolatility;
+    public void setMaxSectorPercentage(double maxSectorPercentage) {
+        this.maxSectorPercentage = maxSectorPercentage;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

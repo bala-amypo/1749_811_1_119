@@ -1,9 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.RiskThreshold;
-import com.example.demo.model.UserPortfolio;
 import com.example.demo.repository.RiskThresholdRepository;
-import com.example.demo.repository.UserPortfolioRepository;
 import com.example.demo.service.RiskThresholdService;
 import org.springframework.stereotype.Service;
 
@@ -13,27 +11,24 @@ import java.util.List;
 public class RiskThresholdServiceImpl implements RiskThresholdService {
 
     private final RiskThresholdRepository thresholdRepository;
-    private final UserPortfolioRepository portfolioRepository;
 
-    public RiskThresholdServiceImpl(
-            RiskThresholdRepository thresholdRepository,
-            UserPortfolioRepository portfolioRepository) {
+    public RiskThresholdServiceImpl(RiskThresholdRepository thresholdRepository) {
         this.thresholdRepository = thresholdRepository;
-        this.portfolioRepository = portfolioRepository;
     }
 
     @Override
-    public RiskThreshold createThreshold(Long portfolioId, RiskThreshold threshold) {
-
-        UserPortfolio portfolio = portfolioRepository.findById(portfolioId)
-                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+    public RiskThreshold createThreshold(RiskThreshold threshold) {
 
         if (threshold.getMaxSingleStockPercentage() < 0 ||
             threshold.getMaxSingleStockPercentage() > 100) {
             throw new IllegalArgumentException("Percentage must be between 0 and 100");
         }
 
-        threshold.setPortfolio(portfolio);
+        if (threshold.getMaxSectorPercentage() < 0 ||
+            threshold.getMaxSectorPercentage() > 100) {
+            throw new IllegalArgumentException("Percentage must be between 0 and 100");
+        }
+
         return thresholdRepository.save(threshold);
     }
 
@@ -43,13 +38,10 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
         RiskThreshold existing = thresholdRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RiskThreshold not found"));
 
-        if (threshold.getMaxSingleStockPercentage() < 0 ||
-            threshold.getMaxSingleStockPercentage() > 100) {
-            throw new IllegalArgumentException("Percentage must be between 0 and 100");
-        }
-
+        existing.setThresholdName(threshold.getThresholdName());
         existing.setMaxSingleStockPercentage(threshold.getMaxSingleStockPercentage());
-        existing.setMaxOverallVolatility(threshold.getMaxOverallVolatility());
+        existing.setMaxSectorPercentage(threshold.getMaxSectorPercentage());
+        existing.setActive(threshold.isActive());
 
         return thresholdRepository.save(existing);
     }
@@ -61,8 +53,8 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
     }
 
     @Override
-    public RiskThreshold getByPortfolioId(Long portfolioId) {
-        return thresholdRepository.findByPortfolioId(portfolioId)
+    public RiskThreshold getByThresholdName(String thresholdName) {
+        return thresholdRepository.findByThresholdName(thresholdName)
                 .orElseThrow(() -> new RuntimeException("RiskThreshold not found"));
     }
 
