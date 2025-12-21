@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "portfolio_holdings")
@@ -25,6 +26,15 @@ public class PortfolioHolding {
     @Column(nullable = false)
     private BigDecimal marketValue;
 
+    @Column(name = "last_updated", nullable = false)
+    private Timestamp lastUpdated;
+
+    @PrePersist
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastUpdated = new Timestamp(System.currentTimeMillis());
+    }
+
     public PortfolioHolding() {}
 
     public PortfolioHolding(UserPortfolio portfolio, Stock stock, Double quantity, BigDecimal marketValue) {
@@ -44,4 +54,6 @@ public class PortfolioHolding {
     public void setQuantity(Double quantity) { this.quantity = quantity; }
     public BigDecimal getMarketValue() { return marketValue; }
     public void setMarketValue(BigDecimal marketValue) { this.marketValue = marketValue; }
+    public Timestamp getLastUpdated() { return lastUpdated; }
+    public void setLastUpdated(Timestamp lastUpdated) { this.lastUpdated = lastUpdated; }
 }
