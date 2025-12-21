@@ -1,33 +1,51 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class AuthController {
+public class UserController {
 
-    private final UserRepository repository;
+    private final UserService userService;
 
-    public AuthController(UserRepository repository) {
-        this.repository = repository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-        return repository.save(user);
+        return userService.registerUser(user);
     }
 
     @GetMapping
     public List<User> getAll() {
-        return repository.findAll();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
     public User getById(@PathVariable Long id) {
-        return repository.findById(id).orElse(null);
+        return userService.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    public User update(@PathVariable Long id,
+                       @RequestBody User user) {
+
+        User existing = userService.findById(id);
+
+        existing.setEmail(user.getEmail());
+        existing.setPassword(user.getPassword());
+        existing.setRole(user.getRole());
+
+        return userService.registerUser(existing);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }
