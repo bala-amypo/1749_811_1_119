@@ -35,7 +35,7 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
                 .orElseThrow(() -> new RuntimeException("Portfolio not found"));
 
         List<PortfolioHolding> holdings =
-                holdingRepo.findByThresholdName(thresholdName);
+                holdingRepo.findByPortfolioId(portfolioId);
 
         if (holdings.isEmpty()) {
             throw new RuntimeException("No holdings found");
@@ -48,12 +48,15 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
         double highestPercent = 0;
 
         for (PortfolioHolding h : holdings) {
-            double percent = (h.getMarketValue().doubleValue() / total) * 100;
+            double percent =
+                    (h.getMarketValue().doubleValue() / total) * 100;
             highestPercent = Math.max(highestPercent, percent);
         }
 
-        RiskThreshold threshold =
-                thresholdRepo.findByThresholdName(thresholdName).orElse(null);
+        RiskThreshold threshold = thresholdRepo.findAll().stream()
+                .filter(RiskThreshold::isActive)
+                .findFirst()
+                .orElse(null);
 
         boolean highRisk = threshold != null &&
                 highestPercent > threshold.getMaxSingleStockPercentage();
@@ -75,8 +78,6 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
     @Override
     public List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId) {
-        return analysisRepo.findByThresholdName(thresholdName);
+        return analysisRepo.findByPortfolioId(portfolioId);
     }
-
-   
 }
