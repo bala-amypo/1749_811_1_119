@@ -18,7 +18,7 @@ public class RiskAnalysisController {
 
     @PostMapping("/portfolio/{portfolioId}")
     public RiskAnalysisResult analyzePortfolio(@PathVariable Long portfolioId) {
-        return service.analyze(portfolioId);
+        return service.analyzePortfolio(portfolioId);
     }
 
     @GetMapping("/{id}")
