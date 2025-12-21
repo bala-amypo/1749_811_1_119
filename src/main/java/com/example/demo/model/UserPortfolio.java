@@ -16,9 +16,10 @@ public class UserPortfolio {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
-    private String portfolioName;
 
+    @Column(unique = true, nullable = false)    
+    private String portfolioName;
+    
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
