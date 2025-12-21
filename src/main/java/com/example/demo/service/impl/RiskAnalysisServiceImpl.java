@@ -78,25 +78,5 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
         return analysisRepo.findByPortfolioId(portfolioId);
     }
 
-    @Override
-    public List<RiskAnalysisResult> getAll() {
-        return analysisRepo.findAll();
-    }
-
-    @Override
-    public RiskAnalysisResult update(Long id, RiskAnalysisResult updated) {
-
-        RiskAnalysisResult existing = getById(id);
-
-        existing.setHighestStockPercentage(updated.getHighestStockPercentage());
-        existing.setIsHighRisk(updated.getIsHighRisk());
-
-        return analysisRepo.save(existing);
-    }
-
-    @Override
-    public void delete(Long id) {
-        RiskAnalysisResult result = getById(id);
-        analysisRepo.delete(result);
-    }
+   
 }
