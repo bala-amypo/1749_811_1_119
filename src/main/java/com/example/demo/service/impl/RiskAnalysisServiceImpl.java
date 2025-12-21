@@ -29,7 +29,7 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
     }
 
     @Override
-    public RiskAnalysisResult analyze(Long portfolioId) {
+    public RiskAnalysisResult analyzePortfolio(Long portfolioId) {
 
         UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
                 .orElseThrow(() -> new RuntimeException("Portfolio not found"));

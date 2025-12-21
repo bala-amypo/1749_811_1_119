@@ -6,15 +6,11 @@ import java.util.List;
 
 public interface RiskAnalysisService {
 
-    RiskAnalysisResult analyze(Long portfolioId);
+    RiskAnalysisResult analyzePortfolio(Long portfolioId);
 
-    RiskAnalysisResult getById(Long id);
+    RiskAnalysisResult getAnalysisById(Long id);
 
-    List<RiskAnalysisResult> getByPortfolio(Long portfolioId);
+    List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId);
 
-    List<RiskAnalysisResult> getAll();
-
-    RiskAnalysisResult update(Long id, RiskAnalysisResult result);
-
-    void delete(Long id);
+   
 }
