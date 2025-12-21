@@ -53,7 +53,7 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
         }
 
         RiskThreshold threshold =
-                thresholdRepo.findByPortfolioId(portfolioId).orElse(null);
+                thresholdRepo.findByThresholdName(thresholdName).orElse(null);
 
         boolean highRisk = threshold != null &&
                 highestPercent > threshold.getMaxSingleStockPercentage();
@@ -75,7 +75,7 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
     @Override
     public List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId) {
-        return analysisRepo.findByPortfolioId(portfolioId);
+        return analysisRepo.findByThresholdName(portfolioId);
     }
 
    
