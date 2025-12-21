@@ -23,7 +23,7 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
     }
 
     @Override
-    public RiskThreshold create(Long portfolioId, RiskThreshold threshold) {
+    public RiskThreshold createThreshold(Long portfolioId, RiskThreshold threshold) {
 
         UserPortfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new RuntimeException("Portfolio not found"));
@@ -38,7 +38,7 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
     }
 
     @Override
-    public RiskThreshold update(Long id, RiskThreshold threshold) {
+    public RiskThreshold updateThreshold(Long id, RiskThreshold threshold) {
 
         RiskThreshold existing = thresholdRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RiskThreshold not found"));
@@ -55,7 +55,7 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
     }
 
     @Override
-    public RiskThreshold getById(Long id) {
+    public RiskThreshold getThresholdById(Long id) {
         return thresholdRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RiskThreshold not found"));
     }
