@@ -35,7 +35,7 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
                 .orElseThrow(() -> new RuntimeException("Portfolio not found"));
 
         List<PortfolioHolding> holdings =
-                holdingRepo.findByPortfolioId(portfolioId);
+                holdingRepo.findByThresholdName(thresholdName);
 
         if (holdings.isEmpty()) {
             throw new RuntimeException("No holdings found");
