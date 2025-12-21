@@ -68,13 +68,13 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
     }
 
     @Override
-    public RiskAnalysisResult getById(Long id) {
+    public RiskAnalysisResult getAnalysisById(Long id) {
         return analysisRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("RiskAnalysisResult not found"));
     }
 
     @Override
-    public List<RiskAnalysisResult> getByPortfolio(Long portfolioId) {
+    public List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId) {
         return analysisRepo.findByPortfolioId(portfolioId);
     }
 

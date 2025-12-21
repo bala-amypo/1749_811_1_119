@@ -17,35 +17,20 @@ public class RiskAnalysisController {
     }
 
     @PostMapping("/portfolio/{portfolioId}")
-    public RiskAnalysisResult analyze(@PathVariable Long portfolioId) {
+    public RiskAnalysisResult analyzePortfolio(@PathVariable Long portfolioId) {
         return service.analyze(portfolioId);
     }
 
     @GetMapping("/{id}")
-    public RiskAnalysisResult getById(@PathVariable Long id) {
-        return service.getById(id);
+    public RiskAnalysisResult getAnalysisById(@PathVariable Long id) {
+        return service.getAnalysisById(id);
     }
 
     @GetMapping("/portfolio/{portfolioId}")
-    public List<RiskAnalysisResult> getByPortfolio(
+    public List<RiskAnalysisResult> getAnalysesForPortfolio(
             @PathVariable Long portfolioId) {
-        return service.getByPortfolio(portfolioId);
+        return service.getAnalysesForPortfolio(portfolioId);
     }
 
-    @GetMapping
-    public List<RiskAnalysisResult> getAll() {
-        return service.getAll();
-    }
-
-    @PutMapping("/{id}")
-    public RiskAnalysisResult update(
-            @PathVariable Long id,
-            @RequestBody RiskAnalysisResult result) {
-        return service.update(id, result);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
+   
 }
