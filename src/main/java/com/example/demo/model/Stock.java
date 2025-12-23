@@ -17,7 +17,8 @@ public class Stock {
     private String companyName;
 
     private String sector;
-
+    
+    @Column(nullable = false)
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
