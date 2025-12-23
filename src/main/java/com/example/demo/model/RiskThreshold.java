@@ -21,7 +21,7 @@ public class RiskThreshold {
     public String getThresholdName() { return thresholdName; }
     public Double getMaxSingleStockPercentage() { return maxSingleStockPercentage; }
     public Double getMaxSectorPercentage() { return maxSectorPercentage; }
-    public Boolean getActive() { return active; }
+    public Boolean isActive() { return active; }
 
     public void setId(Long id) { this.id = id; }
     public void setThresholdName(String thresholdName) { this.thresholdName = thresholdName; }

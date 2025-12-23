@@ -17,7 +17,7 @@ public class RiskAnalysisResult {
     private Timestamp analysisDate;
     private Double highestStockPercentage;
     private Double highestSectorPercentage;
-    private Boolean isHighRisk;
+    private Boolean IsHighRisk;
     private String notes;
 
     public RiskAnalysisResult() {}
@@ -32,7 +32,7 @@ public class RiskAnalysisResult {
     public Timestamp getAnalysisDate() { return analysisDate; }
     public Double getHighestStockPercentage() { return highestStockPercentage; }
     public Double getHighestSectorPercentage() { return highestSectorPercentage; }
-    public Boolean isHighRisk() { return isHighRisk; }
+    public Boolean IsHighRisk() { return IsHighRisk; }
     public String getNotes() { return notes; }
 
     public void setId(Long id) { this.id = id; }
