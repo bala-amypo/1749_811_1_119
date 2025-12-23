@@ -40,6 +40,6 @@ public class RiskAnalysisResult {
     public void setAnalysisDate(Timestamp analysisDate) { this.analysisDate = analysisDate; }
     public void setHighestStockPercentage(Double highestStockPercentage) { this.highestStockPercentage = highestStockPercentage; }
     public void setHighestSectorPercentage(Double highestSectorPercentage) { this.highestSectorPercentage = highestSectorPercentage; }
-    public void setHighRisk(Boolean highRisk) { isHighRisk = highRisk; }
+    public void setIsHighRisk(Boolean highRisk) { IsHighRisk = highRisk; }
     public void setNotes(String notes) { this.notes = notes; }
 }
