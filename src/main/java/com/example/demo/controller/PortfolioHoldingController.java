@@ -18,18 +18,18 @@ public class PortfolioHoldingController {
     }
 
     @PostMapping("/{portfolioId}/{stockId}")
-    public ResponseEntity<PortfolioHolding> addHolding(
+    public ResponseEntity<PortfolioHolding> createHolding(
             @PathVariable Long portfolioId,
             @PathVariable Long stockId,
             @RequestBody PortfolioHolding holding) {
 
         return ResponseEntity.ok(
-                holdingService.addHolding(portfolioId, stockId, holding)
+                holdingService.createHolding(portfolioId, stockId, holding)
         );
     }
 
     @GetMapping("/portfolio/{portfolioId}")
-    public ResponseEntity<List<PortfolioHolding>> getHoldings(@PathVariable Long portfolioId) {
+    public ResponseEntity<List<PortfolioHolding>> getByPortfolio(@PathVariable Long portfolioId) {
         return ResponseEntity.ok(
                 holdingService.getHoldingsByPortfolio(portfolioId)
         );

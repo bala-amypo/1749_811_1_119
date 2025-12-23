@@ -19,7 +19,7 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio createPortfolio(UserPortfolio portfolio) {
-        portfolio.setCreatedAt(LocalDateTime.now());
+        portfolio.setCreatedAt(LocalDateTime.now()); // ✅ correct type
         return repo.save(portfolio);
     }
 
@@ -36,9 +36,9 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio updatePortfolio(Long id, UserPortfolio portfolio) {
-        UserPortfolio p = getPortfolioById(id);
-        p.setPortfolioName(portfolio.getPortfolioName());
-        return repo.save(p);
+        UserPortfolio existing = getPortfolioById(id);
+        existing.setPortfolioName(portfolio.getPortfolioName());
+        return repo.save(existing);
     }
 
     @Override

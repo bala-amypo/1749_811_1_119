@@ -1,34 +1,37 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.RiskThreshold;
-import com.example.demo.service.RiskThresholdService;
+import com.example.demo.model.PortfolioHolding;
+import com.example.demo.service.PortfolioHoldingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/risk-thresholds")
-public class RiskThresholdController {
+@RequestMapping("/api/holdings")
+public class PortfolioHoldingController {
 
-    private final RiskThresholdService thresholdService;
+    private final PortfolioHoldingService holdingService;
 
-    public RiskThresholdController(RiskThresholdService thresholdService) {
-        this.thresholdService = thresholdService;
+    public PortfolioHoldingController(PortfolioHoldingService holdingService) {
+        this.holdingService = holdingService;
     }
 
-    @PostMapping("/{portfolioId}")
-    public ResponseEntity<RiskThreshold> setThreshold(
+    @PostMapping("/{portfolioId}/{stockId}")
+    public ResponseEntity<PortfolioHolding> createHolding(
             @PathVariable Long portfolioId,
-            @RequestBody RiskThreshold threshold) {
+            @PathVariable Long stockId,
+            @RequestBody PortfolioHolding holding) {
 
         return ResponseEntity.ok(
-                thresholdService.setThreshold(portfolioId, threshold)
+                holdingService.createHolding(portfolioId, stockId, holding)
         );
     }
 
-    @GetMapping("/{portfolioId}")
-    public ResponseEntity<RiskThreshold> getThreshold(@PathVariable Long portfolioId) {
+    @GetMapping("/portfolio/{portfolioId}")
+    public ResponseEntity<List<PortfolioHolding>> getByPortfolio(@PathVariable Long portfolioId) {
         return ResponseEntity.ok(
-                thresholdService.getThresholdForPortfolio(portfolioId)
+                holdingService.getHoldingsByPortfolio(portfolioId)
         );
     }
 }

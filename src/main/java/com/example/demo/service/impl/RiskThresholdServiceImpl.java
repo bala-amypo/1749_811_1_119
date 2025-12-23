@@ -23,23 +23,24 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
 
     @Override
     public RiskThreshold updateThreshold(Long id, RiskThreshold threshold) {
-        RiskThreshold t = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Threshold not found"));
-        t.setMaxSingleStockPercentage(threshold.getMaxSingleStockPercentage());
-        t.setActive(threshold.isActive());
-        return repo.save(t);
+        RiskThreshold existing = getThresholdById(id);
+        existing.setThresholdName(threshold.getThresholdName());
+        existing.setMaxSingleStockPercentage(threshold.getMaxSingleStockPercentage());
+        existing.setMaxSectorPercentage(threshold.getMaxSectorPercentage());
+        existing.setActive(threshold.isActive());   // ✅ correct
+        return repo.save(existing);
     }
 
     @Override
     public RiskThreshold getThresholdById(Long id) {
-        return repo.findById(id).orElse(null);
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Threshold not found"));
     }
 
     @Override
-    public RiskThreshold getByThresholdName(String thresholdName) {
-        return repo.findAll().stream()
-                .filter(t -> t.getThresholdName().equals(thresholdName))
-                .findFirst().orElse(null);
+    public RiskThreshold getByThresholdName(String name) {
+        return repo.findByThresholdName(name)
+                .orElseThrow(() -> new RuntimeException("Threshold not found"));
     }
 
     @Override

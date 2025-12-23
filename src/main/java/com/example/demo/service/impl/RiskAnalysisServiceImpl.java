@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.RiskAnalysisResult;
-import com.example.demo.repository.RiskAnalysisResultRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.RiskAnalysisService;
 import org.springframework.stereotype.Service;
 
@@ -12,23 +12,33 @@ import java.util.List;
 public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
     private final RiskAnalysisResultRepository repo;
+    private final UserPortfolioRepository portfolioRepo;
 
-    public RiskAnalysisServiceImpl(RiskAnalysisResultRepository repo) {
+    public RiskAnalysisServiceImpl(
+            RiskAnalysisResultRepository repo,
+            UserPortfolioRepository portfolioRepo) {
         this.repo = repo;
+        this.portfolioRepo = portfolioRepo;
     }
 
     @Override
     public RiskAnalysisResult analyzePortfolio(Long portfolioId) {
+        UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
         RiskAnalysisResult r = new RiskAnalysisResult();
-        r.setAnalysisDate(LocalDateTime.now());
+        r.setPortfolio(portfolio);
+        r.setAnalysisDate(LocalDateTime.now());   // ✅ LocalDateTime matches entity
         r.setHighestStockPercentage(50.0);
-        r.setIsHighRisk(false);
+        r.setIsHighRisk(false);                   // ✅ correct setter
+
         return repo.save(r);
     }
 
     @Override
     public RiskAnalysisResult getAnalysisById(Long id) {
-        return repo.findById(id).orElse(null);
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Analysis not found"));
     }
 
     @Override
