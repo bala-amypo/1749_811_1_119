@@ -1,17 +1,21 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final List<User> users = new ArrayList<>();
+    private final UserRepository repo;
+
+    public UserServiceImpl(UserRepository repo) {
+        this.repo = repo;
+    }
 
     @Override
     public User registerUser(User user) {
@@ -19,28 +23,26 @@ public class UserServiceImpl implements UserService {
             user.setRole("MONITOR");
         }
         user.setCreatedAt(LocalDateTime.now());
-        users.add(user);
-        return user;
+        return repo.save(user);
     }
 
     @Override
     public User findByEmail(String email) {
-        return users.stream()
-                .filter(u -> u.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
+        return repo.findByEmail(email).orElse(null);
     }
 
     @Override
     public User findById(Long id) {
-        return users.stream()
-                .filter(u -> id.equals(u.getId()))
-                .findFirst()
-                .orElse(null);
+        return repo.findById(id).orElse(null);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return users;
+        return repo.findAll();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        repo.deleteById(id);
     }
 }
