@@ -27,7 +27,7 @@ public class RiskThresholdServiceImpl implements RiskThresholdService {
         existing.setThresholdName(threshold.getThresholdName());
         existing.setMaxSingleStockPercentage(threshold.getMaxSingleStockPercentage());
         existing.setMaxSectorPercentage(threshold.getMaxSectorPercentage());
-        existing.setActive(threshold.isActive());   // ✅ CORRECT
+        existing.setActive(threshold.isActive());  
         return repo.save(existing);
     }
 

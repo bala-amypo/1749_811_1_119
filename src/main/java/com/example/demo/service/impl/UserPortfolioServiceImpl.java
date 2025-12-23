@@ -19,7 +19,7 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio createPortfolio(UserPortfolio portfolio) {
-        // ✅ FIX: use Timestamp directly
+        
         portfolio.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         return repo.save(portfolio);
     }
