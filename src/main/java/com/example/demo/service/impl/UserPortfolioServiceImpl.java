@@ -5,7 +5,7 @@ import com.example.demo.repository.UserPortfolioRepository;
 import com.example.demo.service.UserPortfolioService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -19,14 +19,15 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio createPortfolio(UserPortfolio portfolio) {
-        portfolio.setCreatedAt(LocalDateTime.now()); // ✅ LocalDateTime
+        portfolio.setCreatedAt(
+                new Timestamp(System.currentTimeMillis()).toLocalDateTime()
+        );
         return repo.save(portfolio);
     }
 
     @Override
     public UserPortfolio getPortfolioById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+        return repo.findById(id).orElse(null);
     }
 
     @Override
@@ -36,9 +37,8 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio updatePortfolio(Long id, UserPortfolio portfolio) {
-        UserPortfolio existing = getPortfolioById(id);
-        existing.setPortfolioName(portfolio.getPortfolioName());
-        return repo.save(existing);
+        portfolio.setId(id);
+        return repo.save(portfolio);
     }
 
     @Override

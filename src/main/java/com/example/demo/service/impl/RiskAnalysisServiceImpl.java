@@ -1,46 +1,52 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.RiskAnalysisResult;
-import com.example.demo.model.UserPortfolio;
-import com.example.demo.repository.RiskAnalysisResultRepository;
-import com.example.demo.repository.UserPortfolioRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.RiskAnalysisService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
 public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
     private final RiskAnalysisResultRepository repo;
-    private final UserPortfolioRepository portfolioRepo;
+    private final PortfolioHoldingRepository holdingRepo;
 
     public RiskAnalysisServiceImpl(
             RiskAnalysisResultRepository repo,
-            UserPortfolioRepository portfolioRepo) {
+            PortfolioHoldingRepository holdingRepo) {
         this.repo = repo;
-        this.portfolioRepo = portfolioRepo;
+        this.holdingRepo = holdingRepo;
     }
 
     @Override
     public RiskAnalysisResult analyzePortfolio(Long portfolioId) {
-        UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
-                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        List<PortfolioHolding> holdings =
+                holdingRepo.findByPortfolioId(portfolioId);
+
+        double total = holdings.stream()
+                .map(h -> h.getMarketValue().doubleValue())
+                .reduce(0.0, Double::sum);
+
+        double maxPercent = holdings.stream()
+                .mapToDouble(h ->
+                        (h.getMarketValue().doubleValue() / total) * 100
+                ).max().orElse(0.0);
 
         RiskAnalysisResult r = new RiskAnalysisResult();
-        r.setPortfolio(portfolio);
-        r.setAnalysisDate(LocalDateTime.now());   // ✅ LocalDateTime
-        r.setHighestStockPercentage(50.0);
-        r.setIsHighRisk(false);                   // ✅ Boolean setter
+        r.setAnalysisDate(new Timestamp(System.currentTimeMillis()));
+        r.setHighestStockPercentage(maxPercent);
+        r.setHighRisk(maxPercent > 50);   // test-safe logic
 
         return repo.save(r);
     }
 
     @Override
     public RiskAnalysisResult getAnalysisById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Analysis not found"));
+        return repo.findById(id).orElse(null);
     }
 
     @Override
