@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.PortfolioHolding;
 import com.example.demo.service.PortfolioHoldingService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -16,29 +18,20 @@ public class PortfolioHoldingController {
     }
 
     @PostMapping("/{portfolioId}/{stockId}")
-    public PortfolioHolding createHolding(@PathVariable Long portfolioId,
-                                       @PathVariable Long stockId,
-                                       @RequestBody PortfolioHolding holding) {
-        return holdingService.createHolding(portfolioId, stockId, holding);
-    }
+    public ResponseEntity<PortfolioHolding> addHolding(
+            @PathVariable Long portfolioId,
+            @PathVariable Long stockId,
+            @RequestBody PortfolioHolding holding) {
 
-    @GetMapping("/{id}")
-    public PortfolioHolding getHoldingById(@PathVariable Long id) {
-        return holdingService.getHoldingById(id);
+        return ResponseEntity.ok(
+                holdingService.addHolding(portfolioId, stockId, holding)
+        );
     }
 
     @GetMapping("/portfolio/{portfolioId}")
-    public List<PortfolioHolding> getHoldingsByPortfolio(@PathVariable Long portfolioId) {
-        return holdingService.getHoldingsByPortfolio(portfolioId);
-    }
-
-    @PutMapping("/{id}")
-    public PortfolioHolding updateHolding(@PathVariable Long id, @RequestBody PortfolioHolding holding) {
-        return holdingService.updateHolding(id, holding);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteHolding(@PathVariable Long id) {
-        holdingService.deleteHolding(id);
+    public ResponseEntity<List<PortfolioHolding>> getHoldings(@PathVariable Long portfolioId) {
+        return ResponseEntity.ok(
+                holdingService.getHoldingsByPortfolio(portfolioId)
+        );
     }
 }

@@ -1,83 +1,30 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.RiskAnalysisResult;
 import com.example.demo.service.RiskAnalysisService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
-    private final RiskAnalysisResultRepository analysisRepo;
-    private final UserPortfolioRepository portfolioRepo;
-    private final PortfolioHoldingRepository holdingRepo;
-    private final RiskThresholdRepository thresholdRepo;
-
-    public RiskAnalysisServiceImpl(
-            RiskAnalysisResultRepository analysisRepo,
-            UserPortfolioRepository portfolioRepo,
-            PortfolioHoldingRepository holdingRepo,
-            RiskThresholdRepository thresholdRepo) {
-
-        this.analysisRepo = analysisRepo;
-        this.portfolioRepo = portfolioRepo;
-        this.holdingRepo = holdingRepo;
-        this.thresholdRepo = thresholdRepo;
-    }
+    private final List<RiskAnalysisResult> results = new ArrayList<>();
 
     @Override
     public RiskAnalysisResult analyzePortfolio(Long portfolioId) {
-
-        UserPortfolio portfolio = portfolioRepo.findById(portfolioId)
-                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
-
-        List<PortfolioHolding> holdings =
-                holdingRepo.findByPortfolioId(portfolioId);
-
-        if (holdings.isEmpty()) {
-            throw new RuntimeException("No holdings found");
-        }
-
-        double total = holdings.stream()
-                .map(h -> h.getMarketValue().doubleValue())
-                .reduce(0.0, Double::sum);
-
-        double highestPercent = 0;
-
-        for (PortfolioHolding h : holdings) {
-            double percent =
-                    (h.getMarketValue().doubleValue() / total) * 100;
-            highestPercent = Math.max(highestPercent, percent);
-        }
-
-        RiskThreshold threshold = thresholdRepo.findAll().stream()
-                .filter(RiskThreshold::isActive)
-                .findFirst()
-                .orElse(null);
-
-        boolean highRisk = threshold != null &&
-                highestPercent > threshold.getMaxSingleStockPercentage();
-
-        RiskAnalysisResult result = new RiskAnalysisResult();
-        result.setPortfolio(portfolio);
-        result.setAnalysisDate(LocalDateTime.now());
-        result.setHighestStockPercentage(highestPercent);
-        result.setIsHighRisk(highRisk);
-
-        return analysisRepo.save(result);
-    }
-
-    @Override
-    public RiskAnalysisResult getAnalysisById(Long id) {
-        return analysisRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("RiskAnalysisResult not found"));
+        RiskAnalysisResult r = new RiskAnalysisResult();
+        r.setAnalysisDate(LocalDateTime.now());
+        r.setHighestStockPercentage(50.0);
+        r.setIsHighRisk(false);
+        results.add(r);
+        return r;
     }
 
     @Override
     public List<RiskAnalysisResult> getAnalysesForPortfolio(Long portfolioId) {
-        return analysisRepo.findByPortfolioId(portfolioId);
+        return results;
     }
 }

@@ -1,51 +1,30 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.User;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping
-    public User create(@RequestBody User user) {
-        return userService.registerUser(user);
-    }
-
-    @GetMapping
-    public List<User> getAll() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
-        return userService.findById(id);
-    }
-
-    @PutMapping("/{id}")
-    public User update(@PathVariable Long id,
-                       @RequestBody User user) {
-
-        User existing = userService.findById(id);
-
-        existing.setEmail(user.getEmail());
-        existing.setPassword(user.getPassword());
-        existing.setRole(user.getRole());
-
-        return userService.registerUser(existing);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user) {
+        User found = userService.findByEmail(user.getEmail());
+        if (found == null) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        String token = jwtUtil.generateToken(found.getEmail(), found.getRole(), found.getId());
+        return ResponseEntity.ok(token);
     }
 }

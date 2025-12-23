@@ -2,49 +2,33 @@ package com.example.demo.controller;
 
 import com.example.demo.model.RiskThreshold;
 import com.example.demo.service.RiskThresholdService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/risk-thresholds")
 public class RiskThresholdController {
 
-    private final RiskThresholdService service;
+    private final RiskThresholdService thresholdService;
 
-    public RiskThresholdController(RiskThresholdService service) {
-        this.service = service;
+    public RiskThresholdController(RiskThresholdService thresholdService) {
+        this.thresholdService = thresholdService;
     }
 
-    @PostMapping
-    public RiskThreshold createThreshold(@RequestBody RiskThreshold threshold) {
-        return service.createThreshold(threshold);
-    }
-
-    @GetMapping("/{id}")
-    public RiskThreshold getThresholdById(@PathVariable Long id) {
-        return service.getThresholdById(id);
-    }
-
-    @GetMapping("/name/{thresholdName}")
-    public RiskThreshold getByThresholdName(@PathVariable String thresholdName) {
-        return service.getByThresholdName(thresholdName);
-    }
-
-    @GetMapping
-    public List<RiskThreshold> getAll() {
-        return service.getAll();
-    }
-
-    @PutMapping("/{id}")
-    public RiskThreshold updateThreshold(
-            @PathVariable Long id,
+    @PostMapping("/{portfolioId}")
+    public ResponseEntity<RiskThreshold> setThreshold(
+            @PathVariable Long portfolioId,
             @RequestBody RiskThreshold threshold) {
-        return service.updateThreshold(id, threshold);
+
+        return ResponseEntity.ok(
+                thresholdService.setThreshold(portfolioId, threshold)
+        );
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    @GetMapping("/{portfolioId}")
+    public ResponseEntity<RiskThreshold> getThreshold(@PathVariable Long portfolioId) {
+        return ResponseEntity.ok(
+                thresholdService.getThresholdForPortfolio(portfolioId)
+        );
     }
 }

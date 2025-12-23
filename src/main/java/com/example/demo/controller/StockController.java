@@ -1,42 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Stock;
-import com.example.demo.service.StockService;
+import com.example.demo.model.User;
+import com.example.demo.security.JwtUtil;
+import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/stocks")
-public class StockController {
+@RequestMapping("/auth")
+public class AuthController {
 
-    private final StockService stockService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public StockController(StockService stockService) {
-        this.stockService = stockService;
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping
-    public Stock createStock(@RequestBody Stock stock) {
-        return stockService.createStock(stock);
-    }
-
-    @PutMapping("/{id}")
-    public Stock updateStock(@PathVariable Long id, @RequestBody Stock stock) {
-        return stockService.updateStock(id, stock);
-    }
-
-    @GetMapping("/{id}")
-    public Stock getStockById(@PathVariable Long id) {
-        return stockService.getStockById(id);
-    }
-
-    @GetMapping
-    public List<Stock> getAllStocks() {
-        return stockService.getAllStocks();
-    }
-
-    @PatchMapping("/{id}/deactivate")
-    public void deactivateStock(@PathVariable Long id) {
-        stockService.deactivateStock(id);
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user) {
+        User found = userService.findByEmail(user.getEmail());
+        if (found == null) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        String token = jwtUtil.generateToken(found.getEmail(), found.getRole(), found.getId());
+        return ResponseEntity.ok(token);
     }
 }

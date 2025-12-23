@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.RiskAnalysisResult;
 import com.example.demo.service.RiskAnalysisService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,27 +11,23 @@ import java.util.List;
 @RequestMapping("/api/risk-analysis")
 public class RiskAnalysisController {
 
-    private final RiskAnalysisService service;
+    private final RiskAnalysisService analysisService;
 
-    public RiskAnalysisController(RiskAnalysisService service) {
-        this.service = service;
+    public RiskAnalysisController(RiskAnalysisService analysisService) {
+        this.analysisService = analysisService;
     }
 
-    @PostMapping("/portfolio/{portfolioId}")
-    public RiskAnalysisResult analyzePortfolio(@PathVariable Long portfolioId) {
-        return service.analyzePortfolio(portfolioId);
+    @PostMapping("/{portfolioId}")
+    public ResponseEntity<RiskAnalysisResult> analyze(@PathVariable Long portfolioId) {
+        return ResponseEntity.ok(
+                analysisService.analyzePortfolio(portfolioId)
+        );
     }
 
-    @GetMapping("/{id}")
-    public RiskAnalysisResult getAnalysisById(@PathVariable Long id) {
-        return service.getAnalysisById(id);
+    @GetMapping("/{portfolioId}")
+    public ResponseEntity<List<RiskAnalysisResult>> getResults(@PathVariable Long portfolioId) {
+        return ResponseEntity.ok(
+                analysisService.getAnalysesForPortfolio(portfolioId)
+        );
     }
-
-    @GetMapping("/portfolio/{portfolioId}")
-    public List<RiskAnalysisResult> getAnalysesForPortfolio(
-            @PathVariable Long portfolioId) {
-        return service.getAnalysesForPortfolio(portfolioId);
-    }
-
-   
 }

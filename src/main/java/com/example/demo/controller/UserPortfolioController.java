@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.UserPortfolio;
 import com.example.demo.service.UserPortfolioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -16,27 +18,17 @@ public class UserPortfolioController {
     }
 
     @PostMapping
-    public UserPortfolio createPortfolio(@RequestBody UserPortfolio portfolio) {
-        return portfolioService.createPortfolio(portfolio);
+    public ResponseEntity<UserPortfolio> createPortfolio(@RequestBody UserPortfolio portfolio) {
+        return ResponseEntity.ok(portfolioService.createPortfolio(portfolio));
     }
 
     @GetMapping("/{id}")
-    public UserPortfolio getPortfolioById(@PathVariable Long id) {
-        return portfolioService.getPortfolioById(id);
+    public ResponseEntity<UserPortfolio> getPortfolio(@PathVariable Long id) {
+        return ResponseEntity.ok(portfolioService.getPortfolioById(id));
     }
 
     @GetMapping("/user/{userId}")
-    public List<UserPortfolio> getPortfoliosByUser(@PathVariable Long userId) {
-        return portfolioService.getPortfoliosByUser(userId);
-    }
-
-    @PutMapping("/{id}")
-    public UserPortfolio updatePortfolio(@PathVariable Long id, @RequestBody UserPortfolio portfolio) {
-        return portfolioService.updatePortfolio(id, portfolio);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deletePortfolio(@PathVariable Long id) {
-        portfolioService.deletePortfolio(id);
+    public ResponseEntity<List<UserPortfolio>> getPortfoliosByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(portfolioService.getPortfoliosByUser(userId));
     }
 }
