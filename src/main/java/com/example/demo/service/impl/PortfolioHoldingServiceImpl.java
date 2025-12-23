@@ -1,25 +1,48 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.PortfolioHolding;
-import com.example.demo.service.PortfolioHoldingService;
+import com.example.demo.model.UserPortfolio;
+import com.example.demo.repository.UserPortfolioRepository;
+import com.example.demo.service.UserPortfolioService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PortfolioHoldingServiceImpl implements PortfolioHoldingService {
+public class UserPortfolioServiceImpl implements UserPortfolioService {
 
-    private final List<PortfolioHolding> holdings = new ArrayList<>();
+    private final UserPortfolioRepository repo;
 
-    @Override
-    public PortfolioHolding addHolding(Long portfolioId, Long stockId, PortfolioHolding holding) {
-        holdings.add(holding);
-        return holding;
+    public UserPortfolioServiceImpl(UserPortfolioRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public List<PortfolioHolding> getHoldingsByPortfolio(Long portfolioId) {
-        return holdings;
+    public UserPortfolio createPortfolio(UserPortfolio portfolio) {
+        portfolio.setCreatedAt(LocalDateTime.now());
+        return repo.save(portfolio);
+    }
+
+    @Override
+    public UserPortfolio getPortfolioById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+    }
+
+    @Override
+    public List<UserPortfolio> getPortfoliosByUser(Long userId) {
+        return repo.findByUserId(userId);
+    }
+
+    @Override
+    public UserPortfolio updatePortfolio(Long id, UserPortfolio portfolio) {
+        UserPortfolio p = getPortfolioById(id);
+        p.setPortfolioName(portfolio.getPortfolioName());
+        return repo.save(p);
+    }
+
+    @Override
+    public void deletePortfolio(Long id) {
+        repo.deleteById(id);
     }
 }

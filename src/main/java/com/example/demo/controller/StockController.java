@@ -1,30 +1,45 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
+import com.example.demo.model.Stock;
+import com.example.demo.service.StockService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/stocks")
+public class StockController {
 
-    private final UserService userService;
-    private final JwtUtil jwtUtil;
+    private final StockService service;
 
-    public AuthController(UserService userService, JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
+    public StockController(StockService service) {
+        this.service = service;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        User found = userService.findByEmail(user.getEmail());
-        if (found == null) {
-            throw new RuntimeException("Invalid credentials");
-        }
-        String token = jwtUtil.generateToken(found.getEmail(), found.getRole(), found.getId());
-        return ResponseEntity.ok(token);
+    @PostMapping
+    public ResponseEntity<Stock> createStock(@RequestBody Stock stock) {
+        return ResponseEntity.ok(service.createStock(stock));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Stock> updateStock(@PathVariable Long id, @RequestBody Stock stock) {
+        return ResponseEntity.ok(service.updateStock(id, stock));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Stock> getStock(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getStockById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Stock>> getAllStocks() {
+        return ResponseEntity.ok(service.getAllStocks());
+    }
+
+    @PatchMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateStock(@PathVariable Long id) {
+        service.deactivateStock(id);
+        return ResponseEntity.ok().build();
     }
 }
