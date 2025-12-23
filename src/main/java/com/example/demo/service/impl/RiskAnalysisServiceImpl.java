@@ -30,9 +30,9 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
         RiskAnalysisResult r = new RiskAnalysisResult();
         r.setPortfolio(portfolio);
-        r.setAnalysisDate(LocalDateTime.now());   
+        r.setAnalysisDate(LocalDateTime.now());   // ✅ LocalDateTime
         r.setHighestStockPercentage(50.0);
-        r.setIsHighRisk(false);                   
+        r.setIsHighRisk(false);                   // ✅ Boolean setter
 
         return repo.save(r);
     }
