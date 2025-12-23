@@ -19,15 +19,15 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio createPortfolio(UserPortfolio portfolio) {
-        portfolio.setCreatedAt(
-                new Timestamp(System.currentTimeMillis()).toLocalDateTime()
-        );
+        // ✅ FIX: use Timestamp directly
+        portfolio.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         return repo.save(portfolio);
     }
 
     @Override
     public UserPortfolio getPortfolioById(Long id) {
-        return repo.findById(id).orElse(null);
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
     }
 
     @Override
@@ -37,8 +37,9 @@ public class UserPortfolioServiceImpl implements UserPortfolioService {
 
     @Override
     public UserPortfolio updatePortfolio(Long id, UserPortfolio portfolio) {
-        portfolio.setId(id);
-        return repo.save(portfolio);
+        UserPortfolio existing = getPortfolioById(id);
+        existing.setPortfolioName(portfolio.getPortfolioName());
+        return repo.save(existing);
     }
 
     @Override
