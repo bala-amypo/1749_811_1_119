@@ -1,57 +1,48 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
-public class User {
-
+@Table(name = "stocks")
+public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fullName;
-
     @Column(unique = true, nullable = false)
-    private String email;
+    private String ticker;
 
     @Column(nullable = false)
-    private String password;
+    private String companyName;
 
-    private String role;
+    private String sector;
+    
+    @Column(nullable = false)
+    private Boolean isActive = true;
 
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
+    private List<PortfolioHolding> holdings;
 
-    public User() {}
+    public Stock() {}
 
-    public User(String fullName, String email, String password, String role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        if (this.role == null) {
-            this.role = "MONITOR";
-        }
+    public Stock(String ticker, String companyName, String sector, Boolean isActive) {
+        this.ticker = ticker;
+        this.companyName = companyName;
+        this.sector = sector;
+        this.isActive = isActive;
     }
 
     public Long getId() { return id; }
-    public String getFullName() { return fullName; }
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
-    public String getRole() { return role; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-
     public void setId(Long id) { this.id = id; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRole(String role) { this.role = role; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getTicker() { return ticker; }
+    public void setTicker(String ticker) { this.ticker = ticker; }
+    public String getCompanyName() { return companyName; }
+    public void setCompanyName(String companyName) { this.companyName = companyName; }
+    public String getSector() { return sector; }
+    public void setSector(String sector) { this.sector = sector; }
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+    public List<PortfolioHolding> getHoldings() { return holdings; }
+    public void setHoldings(List<PortfolioHolding> holdings) { this.holdings = holdings; }
 }
