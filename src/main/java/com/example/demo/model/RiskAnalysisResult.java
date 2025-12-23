@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "risk_analysis_results")
@@ -12,57 +12,34 @@ public class RiskAnalysisResult {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "portfolio_id", nullable = false)
     private UserPortfolio portfolio;
 
-    @Column(nullable = false)
-    private LocalDateTime analysisDate;
-
-    @Column(nullable = false)
+    private Timestamp analysisDate;
     private Double highestStockPercentage;
-
-    @Column(nullable = false)
+    private Double highestSectorPercentage;
     private Boolean isHighRisk;
+    private String notes;
 
     public RiskAnalysisResult() {}
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void onCreate() {
+        this.analysisDate = new Timestamp(System.currentTimeMillis());
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
+    public UserPortfolio getPortfolio() { return portfolio; }
+    public Timestamp getAnalysisDate() { return analysisDate; }
+    public Double getHighestStockPercentage() { return highestStockPercentage; }
+    public Double getHighestSectorPercentage() { return highestSectorPercentage; }
+    public Boolean isHighRisk() { return isHighRisk; }
+    public String getNotes() { return notes; }
 
-    public UserPortfolio getPortfolio() {
-        return portfolio;
-    }
-
-    public void setPortfolio(UserPortfolio portfolio) {
-        this.portfolio = portfolio;
-    }
-
-    public LocalDateTime getAnalysisDate() {
-        return analysisDate;
-    }
-
-    public void setAnalysisDate(LocalDateTime analysisDate) {
-        this.analysisDate = analysisDate;
-    }
-
-    public Double getHighestStockPercentage() {
-        return highestStockPercentage;
-    }
-
-    public void setHighestStockPercentage(Double highestStockPercentage) {
-        this.highestStockPercentage = highestStockPercentage;
-    }
-
-    public Boolean getIsHighRisk() {
-        return isHighRisk;
-    }
-
-    public void setIsHighRisk(Boolean isHighRisk) {
-        this.isHighRisk = isHighRisk;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setPortfolio(UserPortfolio portfolio) { this.portfolio = portfolio; }
+    public void setAnalysisDate(Timestamp analysisDate) { this.analysisDate = analysisDate; }
+    public void setHighestStockPercentage(Double highestStockPercentage) { this.highestStockPercentage = highestStockPercentage; }
+    public void setHighestSectorPercentage(Double highestSectorPercentage) { this.highestSectorPercentage = highestSectorPercentage; }
+    public void setHighRisk(Boolean highRisk) { isHighRisk = highRisk; }
+    public void setNotes(String notes) { this.notes = notes; }
 }
