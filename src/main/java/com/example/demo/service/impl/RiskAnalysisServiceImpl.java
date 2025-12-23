@@ -1,7 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.RiskAnalysisResult;
+import com.example.demo.model.UserPortfolio;
+import com.example.demo.repository.RiskAnalysisResultRepository;
+import com.example.demo.repository.UserPortfolioRepository;
 import com.example.demo.service.RiskAnalysisService;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,9 @@ public class RiskAnalysisServiceImpl implements RiskAnalysisService {
 
         RiskAnalysisResult r = new RiskAnalysisResult();
         r.setPortfolio(portfolio);
-        r.setAnalysisDate(LocalDateTime.now());   // ✅ LocalDateTime matches entity
+        r.setAnalysisDate(LocalDateTime.now());   
         r.setHighestStockPercentage(50.0);
-        r.setIsHighRisk(false);                   // ✅ correct setter
+        r.setIsHighRisk(false);                   
 
         return repo.save(r);
     }

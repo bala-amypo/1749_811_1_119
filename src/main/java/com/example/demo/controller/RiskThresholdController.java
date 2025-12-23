@@ -1,37 +1,41 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.PortfolioHolding;
-import com.example.demo.service.PortfolioHoldingService;
+import com.example.demo.model.RiskThreshold;
+import com.example.demo.service.RiskThresholdService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/holdings")
-public class PortfolioHoldingController {
+@RequestMapping("/api/risk-thresholds")
+public class RiskThresholdController {
 
-    private final PortfolioHoldingService holdingService;
+    private final RiskThresholdService thresholdService;
 
-    public PortfolioHoldingController(PortfolioHoldingService holdingService) {
-        this.holdingService = holdingService;
+    public RiskThresholdController(RiskThresholdService thresholdService) {
+        this.thresholdService = thresholdService;
     }
 
-    @PostMapping("/{portfolioId}/{stockId}")
-    public ResponseEntity<PortfolioHolding> createHolding(
-            @PathVariable Long portfolioId,
-            @PathVariable Long stockId,
-            @RequestBody PortfolioHolding holding) {
-
-        return ResponseEntity.ok(
-                holdingService.createHolding(portfolioId, stockId, holding)
-        );
+    @PostMapping
+    public ResponseEntity<RiskThreshold> create(@RequestBody RiskThreshold threshold) {
+        return ResponseEntity.ok(thresholdService.createThreshold(threshold));
     }
 
-    @GetMapping("/portfolio/{portfolioId}")
-    public ResponseEntity<List<PortfolioHolding>> getByPortfolio(@PathVariable Long portfolioId) {
-        return ResponseEntity.ok(
-                holdingService.getHoldingsByPortfolio(portfolioId)
-        );
+    @PutMapping("/{id}")
+    public ResponseEntity<RiskThreshold> update(
+            @PathVariable Long id,
+            @RequestBody RiskThreshold threshold) {
+        return ResponseEntity.ok(thresholdService.updateThreshold(id, threshold));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RiskThreshold> get(@PathVariable Long id) {
+        return ResponseEntity.ok(thresholdService.getThresholdById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<RiskThreshold>> getAll() {
+        return ResponseEntity.ok(thresholdService.getAll());
     }
 }
