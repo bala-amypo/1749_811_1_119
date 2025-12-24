@@ -18,14 +18,26 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        User found = userService.findByEmail(user.getEmail());
-        if (found == null) {
-            throw new RuntimeException("Invalid credentials");
-        }
-        String token = jwtUtil.generateToken(found.getEmail(), found.getRole(), found.getId());
-        return ResponseEntity.ok(token);
+   @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+
+    User user = userService.findByEmail(request.getEmail());
+    if (user == null) {
+        throw new RuntimeException("Not found");
     }
+
+    if (!user.getPassword().equals(request.getPassword())) {
+        throw new RuntimeException("Invalid credentials");
+    }
+
+    String token = jwtUtil.generateToken(
+            user.getEmail(),
+            user.getRole(),
+            user.getId()
+    );
+
+    return ResponseEntity.ok(new AuthResponse(token));
+}
+
 
 }
