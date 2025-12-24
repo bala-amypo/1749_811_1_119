@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
@@ -18,26 +20,25 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-   @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(
+            @RequestBody LoginRequest request) {
 
-    User user = userService.findByEmail(request.getEmail());
-    if (user == null) {
-        throw new RuntimeException("Not found");
+        User user = userService.findByEmail(request.getEmail());
+        if (user == null) {
+            throw new RuntimeException("Not found");
+        }
+
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        String token = jwtUtil.generateToken(
+                user.getEmail(),
+                user.getRole(),
+                user.getId()
+        );
+
+        return ResponseEntity.ok(new AuthResponse(token));
     }
-
-    if (!user.getPassword().equals(request.getPassword())) {
-        throw new RuntimeException("Invalid credentials");
-    }
-
-    String token = jwtUtil.generateToken(
-            user.getEmail(),
-            user.getRole(),
-            user.getId()
-    );
-
-    return ResponseEntity.ok(new AuthResponse(token));
-}
-
-
 }
