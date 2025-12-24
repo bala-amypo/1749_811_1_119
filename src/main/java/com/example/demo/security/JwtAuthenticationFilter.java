@@ -19,7 +19,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        // No JWT parsing required for test suite
         filterChain.doFilter(request, response);
     }
 }
