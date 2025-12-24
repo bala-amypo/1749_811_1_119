@@ -27,4 +27,5 @@ public class AuthController {
         String token = jwtUtil.generateToken(found.getEmail(), found.getRole(), found.getId());
         return ResponseEntity.ok(token);
     }
+
 }
