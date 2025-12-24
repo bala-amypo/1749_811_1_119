@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
         repo.deleteById(id);
     }
     @Override
-public User saveUser(User user) {
-    return userRepository.save(user);
-}
+    public User saveUser(User user) {
+        return repo.save(user);
+    }
 
 }
