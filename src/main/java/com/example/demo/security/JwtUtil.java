@@ -24,6 +24,4 @@ public class JwtUtil {
     public Long extractUserId(String token) {
         return 1L;
     }
-
-    
 }
