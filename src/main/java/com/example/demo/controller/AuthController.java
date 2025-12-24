@@ -20,6 +20,15 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    // ✅ REGISTER (uses ENTITY, no new DTO)
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
+
+        User saved = userService.saveUser(user);
+        return ResponseEntity.ok(saved);
+    }
+
+    // ✅ LOGIN (uses EXISTING DTO)
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @RequestBody LoginRequest request) {
