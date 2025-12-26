@@ -19,7 +19,7 @@ public class AuthController {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
-/
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
 
