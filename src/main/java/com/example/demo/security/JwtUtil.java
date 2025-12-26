@@ -1,27 +1,66 @@
 package com.example.demo.security;
 
-import org.springframework.stereotype.Component;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
-@Component
+import java.util.Date;
+
 public class JwtUtil {
 
+    private final String secretKey = "amypo_secret_key_123";
+    private final long validityInMillis = 60 * 60 * 1000; // 1 hour
+
+    // 🔐 Generate JWT token
     public String generateToken(String email, String role, Long userId) {
-        return "test.jwt.token";
+
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("role", role);
+        claims.put("userId", userId);
+
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + validityInMillis);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
+    // 🔍 Validate token
     public boolean validateToken(String token) {
-        return token != null && token.length() > 5;
+        try {
+            Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    // 📧 Extract email from token
     public String extractEmail(String token) {
-        return "abc@mail.com";
+        return getClaims(token).getSubject();
     }
 
+    // 🧑‍💼 Extract role from token
     public String extractRole(String token) {
-        return "ADMIN";
+        return getClaims(token).get("role", String.class);
     }
 
+    // 🆔 Extract userId from token
     public Long extractUserId(String token) {
-        return 1L;
+        return getClaims(token).get("userId", Long.class);
+    }
+
+    // 🔧 Helper method
+    private Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
