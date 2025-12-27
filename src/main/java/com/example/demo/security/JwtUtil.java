@@ -3,16 +3,17 @@ package com.example.demo.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component   
 public class JwtUtil {
 
     private final String SECRET_KEY = "amypo_real_jwt_secret";
-    private final long EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
+    private final long EXPIRATION_TIME = 60 * 60 * 1000;
 
     public String generateToken(String email, String role, Long userId) {
-
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
         claims.put("userId", userId);
@@ -30,9 +31,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token);
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
