@@ -19,9 +19,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
+
         if (user.getRole() == null) {
             user.setRole("MONITOR");
         }
+
         user.setCreatedAt(LocalDateTime.now());
         return repo.save(user);
     }
@@ -45,9 +47,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         repo.deleteById(id);
     }
+
     @Override
     public User saveUser(User user) {
         return repo.save(user);
     }
-
 }
