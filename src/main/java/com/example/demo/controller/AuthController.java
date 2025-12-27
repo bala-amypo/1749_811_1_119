@@ -25,6 +25,22 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // ✅ REGISTER
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
+
+        // encode password before saving
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (user.getRole() == null) {
+            user.setRole("USER");
+        }
+
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    // ✅ LOGIN
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @RequestBody LoginRequest request) {
