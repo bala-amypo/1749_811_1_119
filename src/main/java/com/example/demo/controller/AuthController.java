@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
@@ -29,14 +29,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
 
-        // encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getRole() == null) {
-            user.setRole("USER");
+            user.setRole("MONITOR");
         }
 
-        User savedUser = userService.saveUser(user);
+        User savedUser = userService.registerUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
