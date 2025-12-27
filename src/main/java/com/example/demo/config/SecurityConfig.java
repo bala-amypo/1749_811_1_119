@@ -21,27 +21,28 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception {
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/auth/**",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/status"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(
-                    jwtFilter,
-                    UsernamePasswordAuthenticationFilter.class
-            );
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(
+                "/auth/login",
+                "/auth/register",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/status"
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(
+            jwtFilter,
+            UsernamePasswordAuthenticationFilter.class
+        );
 
-        return http.build();
-    }
+    return http.build();
+}
+
 
     @Bean
     public AuthenticationManager authenticationManager(
