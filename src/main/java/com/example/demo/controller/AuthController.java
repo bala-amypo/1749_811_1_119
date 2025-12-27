@@ -6,6 +6,7 @@ import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,17 +15,14 @@ public class AuthController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService, JwtUtil jwtUtil) {
+    public AuthController(UserService userService,
+                          JwtUtil jwtUtil,
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-
-        User saved = userService.saveUser(user);
-        return ResponseEntity.ok(saved);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -33,10 +31,12 @@ public class AuthController {
 
         User user = userService.findByEmail(request.getEmail());
         if (user == null) {
-            throw new RuntimeException("Not found");
+            throw new RuntimeException("Invalid credentials");
         }
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
