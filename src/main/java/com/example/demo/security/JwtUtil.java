@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -13,6 +14,7 @@ public class JwtUtil {
 
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
+    // 🔐 Generate token
     public String generateToken(String email, String role, Long userId) {
         return Jwts.builder()
                 .setSubject(email)
@@ -24,6 +26,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    // ✅ Validate token
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -33,10 +36,27 @@ public class JwtUtil {
         }
     }
 
+    // 📧 Extract email (subject)
     public String extractEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
+        return getClaims(token).getSubject();
+    }
+
+    // 🧑‍💼 REQUIRED BY TEST CASES
+    public String extractRole(String token) {
+        return getClaims(token).get("role", String.class);
+    }
+
+    // 🆔 REQUIRED BY TEST CASES
+    public Long extractUserId(String token) {
+        return getClaims(token).get("userId", Long.class);
+    }
+
+    // 🔁 Internal helper
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 }
