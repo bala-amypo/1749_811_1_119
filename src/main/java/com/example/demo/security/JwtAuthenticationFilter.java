@@ -26,46 +26,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-        return path.startsWith("/auth")
-                || path.startsWith("/swagger-ui")
-                || path.startsWith("/v3/api-docs")
-                || path.equals("/status");
-    }
-
-    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
+        String path = request.getServletPath();
+        if (path.startsWith("/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        String header = request.getHeader("Authorization");
 
-            String token = authHeader.substring(7);
+        if (header != null && header.startsWith("Bearer ")) {
+
+            String token = header.substring(7);
 
             if (jwtUtil.validateToken(token)) {
+
                 String email = jwtUtil.extractEmail(token);
 
                 UserDetails userDetails =
                         userDetailsService.loadUserByUsername(email);
 
-                UsernamePasswordAuthenticationToken authentication =
+                UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
                                 userDetails.getAuthorities()
                         );
 
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
+                auth.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
                 );
 
-                SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
 

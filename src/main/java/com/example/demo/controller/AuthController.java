@@ -25,7 +25,6 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ REGISTER
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
 
@@ -35,23 +34,19 @@ public class AuthController {
             user.setRole("MONITOR");
         }
 
-        User savedUser = userService.registerUser(user);
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.ok(userService.saveUser(user));
     }
 
-    // ✅ LOGIN
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @RequestBody LoginRequest request) {
 
         User user = userService.findByEmail(request.getEmail());
-        if (user == null) {
-            throw new RuntimeException("Invalid credentials");
-        }
 
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
+        if (user == null ||
+                !passwordEncoder.matches(
+                        request.getPassword(),
+                        user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
